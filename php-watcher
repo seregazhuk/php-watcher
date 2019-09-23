@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+
+<?php
+
+use seregazhuk\PhpWatcher\WatcherCommand;
+
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__.'/vendor/autoload.php';
+} else {
+    require __DIR__.'/../../autoload.php';
+}
+$command = new WatcherCommand();
+$application = new seregazhuk\PhpWatcher\ConsoleApplication();
+$application->add($command);
+
+$application->setDefaultCommand($command->getName(), true);
+$application->run();

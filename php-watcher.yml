@@ -1,0 +1,9 @@
+watch:
+  - src
+  - vendor
+extensions:
+  - php
+  - yml
+ignore:
+  - 'tests'
+executable: php
