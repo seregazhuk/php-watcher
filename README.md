@@ -23,7 +23,7 @@ composer global require seregazhuk/php-watcher
 
 After that phpunit-watcher watch can be run in any directory on your system.
 
-Alternatively you can install the package locally as a dev dependency in your
+Alternatively, you can install the package locally as a dev dependency in your
  project:
 
 ```bash
@@ -42,7 +42,7 @@ PHP-watcher wraps your application, so you can pass all the arguments you
 php-watcher [your php app]
 ```
 
-Using PHP-Watcher is simple, if your application accepts a host and port as the
+Using PHP-Watcher is simple. If your application accepts a host and port as the
  arguments, I can start it using option `--arguments`:
 
 ```bash
@@ -54,7 +54,7 @@ Any output from this script is prefixed with `[php-watcher]`, otherwise all
 
 ## Config files
 
-PHP-Watcher supports customization of its behaviour with config files. The
+PHP-Watcher supports customization of its behavior with config files. The
  file for options may be named `.php-watcher.yml`, `php-watcher.yml` or `php
  -watcher.yml.dist`. The tool will look for a file in the current working directory in that order. 
 
@@ -68,7 +68,7 @@ A config file can take any of the command line arguments, for example:
 ```yml
 watch:
   - src
-  - vendor
+  - config
 extensions:
   - php
   - yml
@@ -78,7 +78,7 @@ ignore:
 
 ## Monitoring multiple directories
 
-By default PHP-Watcher monitors the current working directory. If you want to
+By default, PHP-Watcher monitors the current working directory. If you want to
  take control of that option, use the `--watch` option to add specific paths:
 
 ```bash
@@ -150,7 +150,7 @@ php-watcher server.php --delay 2.5
 
 ## Default executable
 
-By default PHP-Watcher uses `php` bin executable to run your scripts. If you
+By default, PHP-Watcher uses `php` bin executable to run your scripts. If you
  want to provide your own executable use `--exec` option or `executable
  ` param in config file. This is particularly useful if you're working with
   several PHP versions.
