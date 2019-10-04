@@ -2,18 +2,12 @@
 
 namespace tests;
 
-use PHPUnit\Framework\TestCase;
 use tests\Helper\Filesystem;
 use tests\Helper\WatcherRunner;
+use tests\Helper\WatcherTestCase;
 
-final class IgnoreFilesTest extends TestCase
+final class IgnoreFilesTest extends WatcherTestCase
 {
-    protected function tearDown(): void
-    {
-        Filesystem::clear();
-        parent::tearDown();
-    }
-
     /** @test */
     public function it_doesnt_reload_when_ignored_files_change(): void
     {

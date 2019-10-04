@@ -2,6 +2,8 @@
 
 namespace tests\Helper;
 
+use Symfony\Component\Yaml\Yaml;
+
 final class Filesystem
 {
     private const FIXTURES_DIR = 'tests/fixtures/';
@@ -22,6 +24,14 @@ final class Filesystem
         return $name;
     }
 
+    public static function createConfigFile(array $options): string
+    {
+        $name = self::FIXTURES_DIR . '.php-watcher.yml';
+        self::createFile($name, Yaml::dump($options));
+
+        return $name;
+    }
+
     public static function changeFileContentsWith(string $file, string $contents): void
     {
         file_put_contents($file, $contents);
@@ -35,7 +45,7 @@ final class Filesystem
     public static function clear(): void
     {
         foreach (self::$files as $file) {
-            unlink($file);
+            @unlink($file);
         }
 
         self::$files = [];
