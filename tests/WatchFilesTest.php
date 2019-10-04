@@ -2,19 +2,13 @@
 
 namespace tests;
 
-use PHPUnit\Framework\TestCase;
 use tests\Helper\Filesystem;
 use tests\Helper\WatcherRunner;
+use tests\Helper\WatcherTestCase;
 
-final class WatchFilesTest extends TestCase
+final class WatchFilesTest extends WatcherTestCase
 {
     private const SCRIPT_TO_RUN = 'tests/fixtures/watch_test.php';
-
-    protected function tearDown(): void
-    {
-        Filesystem::clear();;
-        parent::tearDown();
-    }
 
     /** @test */
     public function it_watches_changes_in_a_certain_file(): void

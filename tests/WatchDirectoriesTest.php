@@ -2,18 +2,12 @@
 
 namespace tests;
 
-use PHPUnit\Framework\TestCase;
 use tests\Helper\Filesystem;
 use tests\Helper\WatcherRunner;
+use tests\Helper\WatcherTestCase;
 
-final class WatchDirectoriesTest extends TestCase
+final class WatchDirectoriesTest extends WatcherTestCase
 {
-    protected function tearDown(): void
-    {
-        Filesystem::clear();
-        parent::tearDown();
-    }
-
     /** @test */
     public function it_watches_changes_in_a_certain_dir(): void
     {

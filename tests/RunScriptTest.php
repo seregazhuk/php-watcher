@@ -2,11 +2,11 @@
 
 namespace tests;
 
-use PHPUnit\Framework\TestCase;
 use tests\Helper\Filesystem;
 use tests\Helper\WatcherRunner;
+use tests\Helper\WatcherTestCase;
 
-final class RunScriptTest extends TestCase
+final class RunScriptTest extends WatcherTestCase
 {
     /** @test */
     public function it_runs_a_php_script(): void
@@ -19,12 +19,5 @@ final class RunScriptTest extends TestCase
 
         $this->assertStringContainsString("starting `php $scriptToRun`", $output);
         $this->assertStringContainsString('Hello, world', $output);
-
-    }
-
-    protected function tearDown(): void
-    {
-        Filesystem::clear();
-        parent::tearDown();
     }
 }
