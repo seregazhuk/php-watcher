@@ -57,6 +57,8 @@ Any output from this script is prefixed with `[php-watcher]`, otherwise all
 PHP-Watcher supports customization of its behavior with config files. The
  file for options may be named `.php-watcher.yml`, `php-watcher.yml` or `php
  -watcher.yml.dist`. The tool will look for a file in the current working directory in that order. 
+An alternative local configuration file can be specified with the `--config
+ <file>` option.
 
 The specificity is as follows, so that a command line argument will always override the config file settings:
 
