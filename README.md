@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.org/seregazhuk/php-watcher.svg?branch=master)](https://travis-ci.org/seregazhuk/php-watcher)
 
-PHP-watcher helps develop long-running PHP applications by automatically them
- when file changes in the directory are detected.
+PHP-watcher helps develop long-running PHP applications by automatically
+ restarting them when file changes in the directory are detected.
  
 Here's how it looks like:
  
