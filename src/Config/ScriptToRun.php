@@ -4,19 +4,44 @@ namespace seregazhuk\PhpWatcher\Config;
 
 final class ScriptToRun
 {
-    /**
-     * @var string
-     */
-    public $command;
+    private const DEFAULT_PHP_EXECUTABLE = 'php';
+    private const DEFAULT_DELAY_IN_SECONDS = 1;
 
     /**
      * @var float
      */
-    public $delay;
+    private $delay;
 
-    public function __construct(string $script, string $phpExecutable, float $delay, array $arguments)
+    /**
+     * @var string
+     */
+    private $script;
+
+    /**
+     * @var string|null
+     */
+    private $phpExecutable;
+
+    /**
+     * @var array
+     */
+    private $arguments;
+
+    public function __construct(string $script, ?string $phpExecutable, ?float $delay, array $arguments)
     {
-        $this->delay = $delay;
-        $this->command = array_merge([$phpExecutable], explode(' ', $script), $arguments);
+        $this->script = $script;
+        $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
+        $this->phpExecutable = $phpExecutable ?: self::DEFAULT_PHP_EXECUTABLE;
+        $this->arguments = $arguments;
+    }
+
+    public function command(): array
+    {
+        return array_merge([$this->phpExecutable], explode(' ', $this->script), $this->    arguments);
+    }
+
+    public function delay(): float
+    {
+        return $this->delay;
     }
 }

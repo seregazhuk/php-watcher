@@ -4,6 +4,8 @@ namespace seregazhuk\PhpWatcher\Config;
 
 final class WatchList
 {
+    private const DEFAULT_EXTENSIONS = ['php'];
+
     /**
      * @var string[]
      */
@@ -21,8 +23,8 @@ final class WatchList
 
     public function __construct(array $paths = [], array $extensions = [], array $ignore = [])
     {
-        $this->paths = empty($paths) ? getcwd() : $paths;
-        $this->extensions = $extensions;
+        $this->paths = empty($paths) ? [getcwd()] : $paths;
+        $this->extensions = empty($extensions) ? self::DEFAULT_EXTENSIONS : $extensions;
         $this->ignore = $ignore;
     }
 

@@ -25,11 +25,11 @@ final class Watcher
 
     public function startWatching(ScriptToRun $scriptToRun): void
     {
-        $process = new Process($scriptToRun->command);
+        $process = new Process($scriptToRun->command());
         $this->screen->start($process->getCommandLine());
         $process->start();
 
-        $this->loop->addPeriodicTimer($scriptToRun->delay, function () use ($process) {
+        $this->loop->addPeriodicTimer($scriptToRun->delay(), function () use ($process) {
             echo $process->getIncrementalOutput();
             if ($this->shouldReload()) {
                 $this->restartProcess($process);
