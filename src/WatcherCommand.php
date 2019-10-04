@@ -9,25 +9,21 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 final class WatcherCommand extends BaseCommand
 {
-    private const DEFAULT_EXTENSIONS = 'php';
-    private const DEFAULT_PHP_EXECUTABLE = 'php';
-    private const DEFAULT_DELAY_IN_SECONDS = 1;
-
     protected function configure(): void
     {
         $this->setName('watch')
             ->setDescription('Restart PHP application once the source code changes.')
             ->addArgument('script', InputArgument::OPTIONAL, 'PHP script to run')
-            ->addOption('watch', '-w', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to watch', [basename(getcwd())])
-            ->addOption('ext', '-e', InputOption::VALUE_OPTIONAL, 'Extensions to watch', self::DEFAULT_EXTENSIONS)
+            ->addOption('watch', '-w', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to watch')
+            ->addOption('ext', '-e', InputOption::VALUE_OPTIONAL, 'Extensions to watch', '')
             ->addOption('ignore', '-i', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to ignore', [])
-            ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable', self::DEFAULT_PHP_EXECUTABLE)
-            ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart', self::DEFAULT_DELAY_IN_SECONDS)
-            ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', []);
+            ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable')
+            ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
+            ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
+            ->addOption('config', null,  InputOption::VALUE_OPTIONAL, 'Path to config file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

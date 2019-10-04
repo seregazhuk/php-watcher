@@ -15,9 +15,9 @@ final class Builder
 
     public function build(InputInterface $input): Config
     {
-        $valuesFromFile = $this->valuesFromConfigFile();
+        $valuesFromFile = $this->valuesFromConfigFile($this->getConfigPath($input));
         $commandLineValues = $this->valuesFromCommandLineArgs($input);
-        $configValues = array_merge($valuesFromFile, $commandLineValues);
+        $configValues = array_replace_recursive($valuesFromFile, $commandLineValues);
 
         return new Config(
             new ScriptToRun(
@@ -34,12 +34,8 @@ final class Builder
         );
     }
 
-    private function valuesFromConfigFile(): array
+    private function valuesFromConfigFile(string $configFilePath): array
     {
-        $configFilePath = $this->findConfigFile();
-        if ($configFilePath === null) {
-            return [];
-        }
         $values = Yaml::parse(file_get_contents($configFilePath));
         if ($values === null) {
             throw InvalidConfigFileContents::invalidContents($configFilePath);
@@ -68,10 +64,16 @@ final class Builder
             'script' => $input->getArgument('script'),
             'executable' => $input->getOption('exec'),
             'watch' => $input->getOption('watch'),
-            'extensions' => explode(',', $input->getOption('ext')),
+            'extensions' => empty($input->getOption('ext')) ? [] : explode(',', $input->getOption('ext')),
             'ignore' => $input->getOption('ignore'),
             'delay' => (float)$input->getOption('delay'),
             'arguments' => $input->getOption('arguments'),
         ];
+    }
+
+    private function getConfigPath(InputInterface $input): string
+    {
+        $pathFromCommandLine = $input->getOption('config');
+        return empty($pathFromCommandLine) ? $this->findConfigFile() : $pathFromCommandLine;
     }
 }
