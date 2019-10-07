@@ -7,7 +7,6 @@ build:
       tests:
         override:
           - php-scrutinizer-run
-          - phpcs-run
 
     tests-and-coverage:
       tests:
