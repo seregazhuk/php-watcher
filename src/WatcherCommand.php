@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class WatcherCommand extends BaseCommand
 {
@@ -29,7 +30,7 @@ final class WatcherCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = (new Builder())->build($input);
-        $screen = new Screen($output, $input, $this->getApplication());
+        $screen = new Screen(new SymfonyStyle($input, $output), $this->getApplication());
         $watcher = WatcherFactory::create($config->watchList(), $screen);
 
         $screen->showOptions($config->watchList());

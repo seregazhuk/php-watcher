@@ -4,8 +4,6 @@ namespace seregazhuk\PhpWatcher;
 
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
@@ -16,9 +14,9 @@ final class Screen
 
     private $appVersion;
 
-    public function __construct(OutputInterface $output, InputInterface $input, Application $application)
+    public function __construct(SymfonyStyle $output, Application $application)
     {
-        $this->output = new SymfonyStyle($input, $output);
+        $this->output = $output;
         $this->appName = $application->getName();
         $this->appVersion = $application->getVersion();
     }
