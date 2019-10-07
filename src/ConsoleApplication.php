@@ -8,7 +8,7 @@ final class ConsoleApplication extends Application
 {
     public function __construct()
     {
-        parent::__construct('PHP-Watcher', '0.0.1');
+        parent::__construct('PHP-Watcher', '0.2.0');
         $this->add(new WatcherCommand());
     }
 
