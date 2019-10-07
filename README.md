@@ -1,6 +1,14 @@
 # PHP-watcher
 
+[![PHP Version](https://img.shields.io/packagist/php-v/seregazhuk/php-watcher.svg)](https://php.net/)
 [![Build Status](https://travis-ci.org/seregazhuk/php-watcher.svg?branch=master)](https://travis-ci.org/seregazhuk/php-watcher)
+[![Total Downloads](https://poser.pugx.org/seregazhuk/php-watcher/downloads)](https://packagist.org/packages/seregazhuk/php-watcher)
+
+[![Latest Stable Version](https://poser.pugx.org/seregazhuk/php-watcher/v/stable)](https://packagist.org/packages/seregazhuk/php-watcher)
+[![Latest Version](https://img.shields.io/packagist/v/seregazhuk/php-watcher.svg)](https://packagist.org/packages/seregazhuk/php-watcher)
+[![Latest Unstable Version](https://poser.pugx.org/seregazhuk/php-watcher/v/unstable)](https://packagist.org/packages/seregazhuk/php-watcher)
+
+[![License](https://poser.pugx.org/seregazhuk/php-watcher/license)](https://packagist.org/packages/seregazhuk/php-watcher)
 
 PHP-watcher helps develop long-running PHP applications by automatically
  restarting them when file changes in the directory are detected.
