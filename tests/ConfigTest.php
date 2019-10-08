@@ -15,7 +15,7 @@ final class ConfigTest extends WatcherTestCase
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
         $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch', 'tests', '--config', $configFile]);
-        sleep(1);
+        $this->wait();
 
         $output = $watcher->getOutput();
         $this->assertStringNotContainsString('directory-to-watch', $output);
@@ -28,7 +28,7 @@ final class ConfigTest extends WatcherTestCase
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
         $watcher = (new WatcherRunner())->run($fileToWatch, ['--config', $configFile]);
-        sleep(1);
+        $this->wait();
 
         $output = $watcher->getOutput();
         $this->assertStringContainsString('directory-to-watch', $output);

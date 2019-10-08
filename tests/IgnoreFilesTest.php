@@ -13,10 +13,10 @@ final class IgnoreFilesTest extends WatcherTestCase
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch' , __DIR__, '--ignore', basename($fileToWatch),]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringNotContainsString('restarting due to changes...', $watcher->getOutput());
     }
 
@@ -25,10 +25,10 @@ final class IgnoreFilesTest extends WatcherTestCase
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch' , __DIR__, '--ignore', Filesystem::fixturesDir()]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringNotContainsString('restarting due to changes...', $watcher->getOutput());
     }
 }

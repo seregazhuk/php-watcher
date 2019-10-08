@@ -13,10 +13,10 @@ final class WatchDirectoriesTest extends WatcherTestCase
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner)->run($fileToWatch, ['--watch', __DIR__]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringContainsString('Something changed', $watcher->getOutput());
     }
 
@@ -25,10 +25,10 @@ final class WatchDirectoriesTest extends WatcherTestCase
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner)->run($fileToWatch, ['--watch', __DIR__]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringContainsString('restarting due to changes...', $watcher->getOutput());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace seregazhuk\PhpWatcher;
 
+use React\ChildProcess\Process;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -56,8 +57,7 @@ final class Screen
 
     public function start(string $command): void
     {
-        $this->info(sprintf('starting `%s`', str_replace("'", '', $command)));
-        $this->output->writeln('');
+        $this->info(sprintf('starting `%s`', str_replace("'", '', trim($command))));
     }
 
     public function restarting(string $command): void
@@ -65,6 +65,13 @@ final class Screen
         $this->output->writeln('');
         $this->info('restarting due to changes...');
         $this->start($command);
+    }
+
+    public function subscribeToProcessOutput(Process $process): void
+    {
+        $process->stdout->on('data', static function ($data) {
+            echo $data;
+        });
     }
 
     private function message(string $text): string

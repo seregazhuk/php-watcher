@@ -2,9 +2,7 @@
 
 namespace seregazhuk\PhpWatcher\Watcher;
 
-use React\EventLoop\Factory as EventLoopFactory;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Screen;
 use Symfony\Component\Finder\Finder;
 use Yosymfony\ResourceWatcher\Crc32ContentHash;
 use Yosymfony\ResourceWatcher\ResourceCacheMemory;
@@ -12,13 +10,11 @@ use Yosymfony\ResourceWatcher\ResourceWatcher;
 
 final class Factory
 {
-    public static function create(WatchList $watchList, Screen $screen): Watcher
+    public static function create(WatchList $watchList): ResourceWatcher
     {
-        $resourceWatcher = new ResourceWatcher(
+        return new ResourceWatcher(
             new ResourceCacheMemory(), self::makeFinder($watchList), new Crc32ContentHash()
         );
-
-        return new Watcher(EventLoopFactory::create(), $resourceWatcher, $screen);
     }
 
     private static function makeFinder(WatchList $watchList): Finder
@@ -58,5 +54,4 @@ final class Factory
             $finder->name($watchPath->fileName());
         }
     }
-
 }

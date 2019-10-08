@@ -11,4 +11,9 @@ abstract class WatcherTestCase extends TestCase
         Filesystem::clear();
         parent::tearDown();
     }
+
+    protected function wait(): void
+    {
+        usleep(1500000);
+    }
 }

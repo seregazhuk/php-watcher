@@ -14,7 +14,7 @@ final class RunScriptTest extends WatcherTestCase
         $scriptToRun = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner)->run($scriptToRun);
 
-        sleep(1);
+        $this->wait();
         $output = $watcher->getOutput();
 
         $this->assertStringContainsString("starting `php $scriptToRun`", $output);

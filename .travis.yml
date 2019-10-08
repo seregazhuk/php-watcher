@@ -6,7 +6,7 @@ php:
   - 7.3
 
 before_script:
-  - composer install --prefer-source --no-interaction --dev
+  - composer install --prefer-source --no-interaction
   - composer dump-autoload
 
 script: vendor/bin/phpunit

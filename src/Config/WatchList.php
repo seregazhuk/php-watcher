@@ -60,4 +60,19 @@ final class WatchList
     {
         return $this->ignore;
     }
+
+    public static function fromJson(string $json): self
+    {
+        $values = json_decode($json, true);
+        return new self($values['paths'], $values['extensions'], $values['ignore']);
+    }
+
+    public function toJson(): string
+    {
+        return json_encode([
+            'paths' => $this->paths,
+            'ignore' => $this->ignore,
+            'extensions' => $this->extensions
+        ]);
+    }
 }
