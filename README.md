@@ -16,9 +16,8 @@ PHP-watcher helps develop long-running PHP applications by automatically
  
 Here's how it looks like:
  
-![watcher screenshot](demo.gif)
+![watcher screenshot](images/demo.svg)
 
-PHP-watcher does not require any additional changes to your code or method of
  development. `php-watcher` is a replacement wrapper for `php`, to use PHP
  -watcher replace the word `php` in the command line when executing your script.
 
