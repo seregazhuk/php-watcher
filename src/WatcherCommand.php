@@ -33,10 +33,9 @@ final class WatcherCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = (new Builder())->build($input);
-        $screen = new Screen(new SymfonyStyle($input, $output), $this->getApplication());
-
         $loop = Factory::create();
 
+        $screen = new Screen(new SymfonyStyle($input, $output), $this->getApplication());
         $filesystem = new ChangesListener($loop, $config->watchList());
         $watcher = new Watcher($loop, $screen, $filesystem);
 

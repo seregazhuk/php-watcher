@@ -25,7 +25,7 @@ final class Watcher
     public function startWatching(Process $process, float $delayToRestart): void
     {
         $this->screen->start($process->getCommand());
-
+        $this->screen->showSpinner($this->loop);
         $this->startProcess($process);
 
         $this->filesystemListener->start(function () use ($process, $delayToRestart) {
