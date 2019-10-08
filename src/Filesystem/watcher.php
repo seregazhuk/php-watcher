@@ -5,7 +5,7 @@ use seregazhuk\PhpWatcher\Watcher\Factory;
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$params = array_slice($argv, 1);
+$params = array_slice($_SERVER['argv'], 1);
 $watchList = WatchList::fromJson($params[0]);
 $watcher = Factory::create($watchList);
 
