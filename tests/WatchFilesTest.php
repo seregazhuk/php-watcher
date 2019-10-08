@@ -8,17 +8,15 @@ use tests\Helper\WatcherTestCase;
 
 final class WatchFilesTest extends WatcherTestCase
 {
-    private const SCRIPT_TO_RUN = 'tests/fixtures/watch_test.php';
-
     /** @test */
     public function it_watches_changes_in_a_certain_file(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner)->run($fileToWatch, ['--watch', $fileToWatch]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringContainsString('Something changed', $watcher->getOutput());
     }
 
@@ -27,10 +25,10 @@ final class WatchFilesTest extends WatcherTestCase
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
         $watcher = (new WatcherRunner)->run($fileToWatch, ['--watch', $fileToWatch]);
-        sleep(1);
+        $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
-        sleep(1);
+        $this->wait();
         $this->assertStringContainsString('restarting due to changes...', $watcher->getOutput());
     }
 }
