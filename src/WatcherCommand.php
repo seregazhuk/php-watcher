@@ -2,8 +2,11 @@
 
 namespace seregazhuk\PhpWatcher;
 
+use React\ChildProcess\Process;
+use React\EventLoop\Factory;
 use seregazhuk\PhpWatcher\Config\Builder;
-use seregazhuk\PhpWatcher\Watcher\Factory as WatcherFactory;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Watcher\Watcher;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,16 +27,21 @@ final class WatcherCommand extends BaseCommand
             ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable')
             ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
             ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
-            ->addOption('config', null,  InputOption::VALUE_OPTIONAL, 'Path to config file');
+            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = (new Builder())->build($input);
         $screen = new Screen(new SymfonyStyle($input, $output), $this->getApplication());
-        $watcher = WatcherFactory::create($config->watchList(), $screen);
+
+        $loop = Factory::create();
+
+        $filesystem = new ChangesListener($loop, $config->watchList());
+        $watcher = new Watcher($loop, $screen, $filesystem);
 
         $screen->showOptions($config->watchList());
-        $watcher->startWatching($config->scriptToRun());
+        $process = new Process($config->scriptToRun()->command());
+        $watcher->startWatching($process, $config->scriptToRun()->delay());
     }
 }
