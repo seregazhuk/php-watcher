@@ -20,12 +20,10 @@ final class Builder
         $configValues = array_replace_recursive($valuesFromFile, $commandLineValues);
 
         return new Config(
-            new ScriptToRun(
-                $configValues['script'],
-                $configValues['executable'],
-                $configValues['delay'],
-                $configValues['arguments']
-            ),
+            $configValues['script'],
+            $configValues['executable'],
+            $configValues['delay'],
+            $configValues['arguments'],
             new WatchList(
                 $configValues['watch'],
                 $configValues['extensions'],
