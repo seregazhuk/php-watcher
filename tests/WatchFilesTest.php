@@ -26,7 +26,7 @@ final class WatchFilesTest extends WatcherTestCase
     public function it_reloads_by_changes_in_a_watched_file(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
-        $watcher = (new WatcherRunner)->run(self::SCRIPT_TO_RUN, ['--watch', $fileToWatch]);
+        $watcher = (new WatcherRunner)->run($fileToWatch, ['--watch', $fileToWatch]);
         sleep(1);
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
