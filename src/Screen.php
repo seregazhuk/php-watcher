@@ -3,6 +3,8 @@
 namespace seregazhuk\PhpWatcher;
 
 use React\ChildProcess\Process;
+use AlecRabbit\Spinner\SnakeSpinner;
+use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -15,11 +17,14 @@ final class Screen
 
     private $appVersion;
 
+    private $spinner;
+
     public function __construct(SymfonyStyle $output, Application $application)
     {
         $this->output = $output;
         $this->appName = $application->getName();
         $this->appVersion = $application->getVersion();
+        $this->spinner = new SnakeSpinner();
     }
 
     public function showOptions(WatchList $watchList): void
@@ -62,6 +67,7 @@ final class Screen
 
     public function restarting(string $command): void
     {
+        $this->spinner->erase();
         $this->output->writeln('');
         $this->info('restarting due to changes...');
         $this->start($command);
@@ -72,6 +78,14 @@ final class Screen
         $process->stdout->on('data', static function ($data) {
             echo $data;
         });
+    }
+
+    public function showSpinner(LoopInterface $loop): void
+    {
+        $loop->addPeriodicTimer($this->spinner->interval(), function () {
+            $this->spinner->spin();
+        });
+        $this->spinner->begin();
     }
 
     private function message(string $text): string

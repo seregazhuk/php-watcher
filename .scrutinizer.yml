@@ -1,6 +1,6 @@
 build:
   environment:
-    php: 7.1.12
+    php: 7.2
 
   nodes:
     analysis:

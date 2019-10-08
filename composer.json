@@ -11,14 +11,15 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "yosymfony/resource-watcher": "^2.0",
         "symfony/process": "^4.3",
         "symfony/console": "^4.3",
         "react/event-loop": "^1.1",
         "symfony/yaml": "^4.3",
         "react/child-process": "^0.6.1",
-        "ext-json": "*"
+        "ext-json": "*",
+        "alecrabbit/php-console-spinner": "^0.51.1"
     },
     "autoload": {
         "psr-4": {
@@ -34,6 +35,6 @@
         "php-watcher"
     ],
     "require-dev": {
-        "phpunit/phpunit": "^7.5"
+        "phpunit/phpunit": "^8.0"
     }
 }
