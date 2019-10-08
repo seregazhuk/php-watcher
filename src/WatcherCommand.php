@@ -40,7 +40,7 @@ final class WatcherCommand extends BaseCommand
         $watcher = new Watcher($loop, $screen, $filesystem);
 
         $screen->showOptions($config->watchList());
-        $process = new Process($config->scriptToRun()->command());
-        $watcher->startWatching($process, $config->scriptToRun()->delay());
+        $process = new Process($config->command());
+        $watcher->startWatching($process, $config->delay());
     }
 }
