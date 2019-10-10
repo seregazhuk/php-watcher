@@ -6,6 +6,7 @@ use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Watcher\Watcher;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
