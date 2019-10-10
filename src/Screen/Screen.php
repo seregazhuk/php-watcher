@@ -2,7 +2,6 @@
 
 namespace seregazhuk\PhpWatcher\Screen;
 
-use AlecRabbit\Spinner\SnakeSpinner;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
@@ -24,7 +23,7 @@ final class Screen
         $this->output = $output;
         $this->appName = $application->getName();
         $this->appVersion = $application->getVersion();
-        $this->spinner = new SnakeSpinner();
+        $this->spinner = new Spinner();
     }
 
     public function showOptions(WatchList $watchList): void
@@ -85,7 +84,6 @@ final class Screen
         $loop->addPeriodicTimer($this->spinner->interval(), function () {
             $this->spinner->spin();
         });
-        $this->spinner->begin();
     }
 
     private function message(string $text): string
