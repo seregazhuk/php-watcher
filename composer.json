@@ -1,7 +1,20 @@
 {
     "name": "seregazhuk/php-watcher",
+    "type": "library",
     "description": "Automatically restart PHP application once the source code changes",
     "license": "MIT",
+    "keywords": [
+        "php",
+        "asynchronous",
+        "console",
+        "cli",
+        "scripts",
+        "watcher",
+        "clock",
+        "shell",
+        "bash",
+        "php-watcher"
+    ],
     "authors": [
         {
             "name": "Sergey Zhuk",
@@ -36,5 +49,6 @@
     ],
     "require-dev": {
         "phpunit/phpunit": "^8.0"
-    }
+    },
+    "minimum-stability": "alpha"
 }
