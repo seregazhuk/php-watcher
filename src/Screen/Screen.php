@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher;
+namespace seregazhuk\PhpWatcher\Screen;
 
-use React\ChildProcess\Process;
 use AlecRabbit\Spinner\SnakeSpinner;
+use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Console\Application;
