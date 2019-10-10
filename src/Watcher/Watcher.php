@@ -29,7 +29,7 @@ final class Watcher
         $this->startProcess($process);
 
         $this->filesystemListener->start(function () use ($process, $delayToRestart) {
-            $process->terminate();
+            $process->terminate(SIGTERM);
             $this->screen->restarting($process->getCommand());
 
             $this->loop->addTimer($delayToRestart, function () use ($process) {

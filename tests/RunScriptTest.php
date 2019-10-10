@@ -20,4 +20,19 @@ final class RunScriptTest extends WatcherTestCase
         $this->assertStringContainsString("starting `php $scriptToRun`", $output);
         $this->assertStringContainsString('Hello, world', $output);
     }
+
+    /** @test */
+    public function a_script_restarts_by_sending_a_sigterm_signal(): void
+    {
+        $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
+        $watcher = (new WatcherRunner)->run($scriptToRun, ['--watch', $scriptToRun]);
+        $this->wait();
+
+        Filesystem::appendFileContentsWith($scriptToRun, ' ');
+        $this->wait();
+        $output = $watcher->getOutput();
+
+        $this->assertStringContainsString('Hello, world', $output);
+        $this->assertStringContainsString('SIGTERM was received', $output);
+    }
 }

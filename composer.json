@@ -31,7 +31,8 @@
         "react/event-loop": "^1.1",
         "symfony/yaml": "^4.3",
         "react/child-process": "^0.6.1",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-pcntl": "*"
     },
     "autoload": {
         "psr-4": {
