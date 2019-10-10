@@ -176,14 +176,6 @@ or using CLI:
 php-watcher server.php --exec php7
 ```
 
-## POSIX Pid and signals
-
-By default, process will be run inside sh wrapper, for [sigchild compatibility](https://reactphp.org/child-process/#sigchild-compatibility). This will prevent signals processing, including SIGTERM on process restart. To prevent this behavior, you may provide `--unwrap` option.
-
-```shell script
-php-watcher server.php --unwrap
-```
-
 # License
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)

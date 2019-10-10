@@ -20,17 +20,4 @@ final class RunScriptTest extends WatcherTestCase
         $this->assertStringContainsString("starting `php $scriptToRun`", $output);
         $this->assertStringContainsString('Hello, world', $output);
     }
-
-    /** @test */
-    public function it_runs_a_php_script_unwrapped(): void
-    {
-	    $scriptToRun = Filesystem::createHelloWorldPHPFile();
-	    $watcher = (new WatcherRunner)->run($scriptToRun, ['--unwrap']);
-
-	    $this->wait();
-	    $output = $watcher->getOutput();
-
-	    $this->assertStringContainsString("starting `exec php $scriptToRun`", $output);
-	    $this->assertStringContainsString('Hello, world', $output);
-    }
 }
