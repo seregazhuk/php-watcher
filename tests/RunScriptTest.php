@@ -30,7 +30,7 @@ final class RunScriptTest extends WatcherTestCase
 	    $this->wait();
 	    $output = $watcher->getOutput();
 
-	    $this->assertStringContainsString("starting `php $scriptToRun`", $output);
+	    $this->assertStringContainsString("starting `exec php $scriptToRun`", $output);
 	    $this->assertStringContainsString('Hello, world', $output);
     }
 }
