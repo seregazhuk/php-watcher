@@ -1,7 +1,6 @@
 ## 0.3.1 (2019-10-10)
 * Fix: autoload path inside watcher.php fixed for composer project
- installation  ([#16](https://github.com/seregazhuk/php-watcher/pull/16)) by
-  [gorbunov](https://github.com/gorbunov)
+ installation  ([#16](https://github.com/seregazhuk/php-watcher/pull/16)) by [gorbunov](https://github.com/gorbunov)
 * Fix: custom spinner implementation ([#19](https://github.com/seregazhuk/php-watcher/pull/19))   
 * Fix: restore screen cursor when interrupting the script ([#20](https://github.com/seregazhuk/php-watcher/pull/20)) 
 
