@@ -22,6 +22,7 @@ final class Builder
         return new Config(
             $configValues['script'],
             $configValues['executable'],
+            $configValues['unwrap'],
             $configValues['delay'],
             $configValues['arguments'],
             new WatchList(
@@ -66,6 +67,7 @@ final class Builder
             'ignore' => $input->getOption('ignore'),
             'delay' => (float)$input->getOption('delay'),
             'arguments' => $input->getOption('arguments'),
+            'unwrap' => (bool)$input->getOption('unwrap'),
         ];
     }
 

@@ -28,7 +28,8 @@ final class WatcherCommand extends BaseCommand
             ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable')
             ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
             ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
-            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file');
+            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file')
+            ->addOption('unwrap', null, InputOption::VALUE_OPTIONAL, 'Unwrap process from sh wrapper', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
