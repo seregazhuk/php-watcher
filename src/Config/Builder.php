@@ -15,7 +15,7 @@ final class Builder
 
     public function build(InputInterface $input): Config
     {
-        $valuesFromFile = $this->valuesFromConfigFile($this->getConfigPath($input));
+        $valuesFromFile = $this->getValuesFromConfigFile($input);
         $commandLineValues = $this->valuesFromCommandLineArgs($input);
         $configValues = array_replace_recursive($valuesFromFile, $commandLineValues);
 
@@ -34,7 +34,12 @@ final class Builder
 
     private function valuesFromConfigFile(string $configFilePath): array
     {
-        $values = Yaml::parse(file_get_contents($configFilePath));
+        $contents = file_get_contents($configFilePath);
+        if ($contents === false) {
+            throw InvalidConfigFileContents::invalidContents($configFilePath);
+        }
+
+        $values = Yaml::parse($contents);
         if ($values === null) {
             throw InvalidConfigFileContents::invalidContents($configFilePath);
         }
@@ -69,9 +74,21 @@ final class Builder
         ];
     }
 
-    private function getConfigPath(InputInterface $input): string
+    private function getConfigPath(InputInterface $input): ?string
     {
-        $pathFromCommandLine = $input->getOption('config');
+        $pathFromCommandLine = (string)$input->getOption('config');
+
         return empty($pathFromCommandLine) ? $this->findConfigFile() : $pathFromCommandLine;
+    }
+
+    private function getValuesFromConfigFile(InputInterface $input): array
+    {
+        $configFilePath = $this->getConfigPath($input);
+        if ($configFilePath === null) {
+            $valuesFromFile = [];
+        } else {
+            $valuesFromFile = $this->valuesFromConfigFile($configFilePath);
+        }
+        return $valuesFromFile;
     }
 }
