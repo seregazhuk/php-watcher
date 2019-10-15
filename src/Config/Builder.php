@@ -22,6 +22,7 @@ final class Builder
         return new Config(
             $configValues['script'],
             $configValues['executable'],
+            $configValues['signal'],
             $configValues['delay'],
             $configValues['arguments'],
             new WatchList(
@@ -64,6 +65,7 @@ final class Builder
             'watch' => $input->getOption('watch'),
             'extensions' => empty($input->getOption('ext')) ? [] : explode(',', $input->getOption('ext')),
             'ignore' => $input->getOption('ignore'),
+            'signal' => $input->getOption('signal') ? constant($input->getOption('signal')) : null,
             'delay' => (float)$input->getOption('delay'),
             'arguments' => $input->getOption('arguments'),
         ];

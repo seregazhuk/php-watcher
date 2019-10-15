@@ -66,6 +66,7 @@ final class Screen
 
     public function restarting(string $command): void
     {
+        $this->output->writeln('');
         $this->spinner->erase();
         $this->output->writeln('');
         $this->info('restarting due to changes...');

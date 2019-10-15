@@ -27,6 +27,7 @@ final class WatcherCommand extends BaseCommand
             ->addOption('ignore', '-i', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to ignore', [])
             ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable')
             ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
+            ->addOption('signal', null, InputOption::VALUE_OPTIONAL, 'Signal to reload the app')
             ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
             ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file');
     }
@@ -42,6 +43,6 @@ final class WatcherCommand extends BaseCommand
 
         $screen->showOptions($config->watchList());
         $process = new Process($config->command());
-        $watcher->startWatching($process, $config->delay());
+        $watcher->startWatching($process, $config->signal(), $config->delay());
     }
 }

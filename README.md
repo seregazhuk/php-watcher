@@ -176,6 +176,31 @@ or using CLI:
 php-watcher server.php --exec php7
 ```
 
+## Gracefully reloading down your script
+
+It is possible to have PHP-watcher send any signal that you specify to your
+ application.
+
+```bash
+php-watcher --signal SIGTERM server.php
+```
+
+Your application can handle the signal as follows:
+
+```php
+<?php
+
+declare(ticks = 1);
+pcntl_signal(SIGTERM, 'terminationHandler');
+
+function terminationHandler()
+{
+    // ...        
+}
+```
+
+By default PHP-watcher sends SIGINT signal.
+
 # License
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)
