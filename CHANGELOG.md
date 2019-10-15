@@ -1,3 +1,7 @@
+## 0.4.0 (2019-10-15)
+* Fix: allow to liten to signals when running inside the docker container [#27](https://github.com/seregazhuk/php-watcher/pull/27)
+* Feature: send custom signals to restart the app [#27](https://github.com/seregazhuk/php-watcher/pull/27)
+
 ## 0.3.1 (2019-10-10)
 * Fix: autoload path inside watcher.php fixed for composer project
  installation  ([#16](https://github.com/seregazhuk/php-watcher/pull/16)) by [gorbunov](https://github.com/gorbunov)
