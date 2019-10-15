@@ -40,7 +40,13 @@ final class Config
 
     public function command(): string
     {
-        return 'exec ' . implode(' ', [$this->phpExecutable, $this->script, implode(' ', $this->arguments)]);
+        $commandline = implode(' ', [$this->phpExecutable, $this->script, implode(' ', $this->arguments)]);
+        if ('\\' !== DIRECTORY_SEPARATOR) {
+            // exec is mandatory to deal with sending a signal to the process
+            $commandline = 'exec '.$commandline;
+        }
+
+        return $commandline;
     }
 
     public function delay(): float

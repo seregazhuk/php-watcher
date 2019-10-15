@@ -61,7 +61,8 @@ final class Screen
 
     public function start(string $command): void
     {
-        $this->info(sprintf('starting `%s`', str_replace("'", '', trim($command))));
+        $command = str_replace('exec', '', $command);
+        $this->info(sprintf('starting `%s`', trim($command)));
     }
 
     public function restarting(string $command): void
