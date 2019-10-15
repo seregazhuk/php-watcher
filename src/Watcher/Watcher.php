@@ -29,7 +29,7 @@ final class Watcher
         $this->startProcess($process);
 
         $this->filesystemListener->start();
-        $this->filesystemListener->on('change', function () use ($process, $delayToRestart) {
+        $this->filesystemListener->on('change', function () use ($process, $signal, $delayToRestart) {
             $this->restartProcess($process, $signal, $delayToRestart);
         });
 

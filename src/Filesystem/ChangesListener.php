@@ -26,7 +26,7 @@ final class ChangesListener extends EventEmitter
         $watcherProcess = new Process($this->scriptToRun());
         $watcherProcess->start($this->loop);
 
-        $watcherProcess->stdout->on('data', static function ($data) {
+        $watcherProcess->stdout->on('data', function ($data) {
             if ((bool)$data) {
                 $this->emit('change');
             }
