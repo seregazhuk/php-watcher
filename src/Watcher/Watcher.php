@@ -22,14 +22,14 @@ final class Watcher
         $this->filesystemListener = $filesystemListener;
     }
 
-    public function startWatching(Process $process, float $delayToRestart): void
+    public function startWatching(Process $process, int $signal, float $delayToRestart): void
     {
         $this->screen->start($process->getCommand());
         $this->screen->showSpinner($this->loop);
         $this->startProcess($process);
 
-        $this->filesystemListener->start(function () use ($process, $delayToRestart) {
-            $process->terminate();
+        $this->filesystemListener->start(function () use ($process, $signal, $delayToRestart) {
+            $process->terminate($signal);
             $this->screen->restarting($process->getCommand());
 
             $this->loop->addTimer($delayToRestart, function () use ($process) {
