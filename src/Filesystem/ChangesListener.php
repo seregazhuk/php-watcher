@@ -2,11 +2,12 @@
 
 namespace seregazhuk\PhpWatcher\Filesystem;
 
+use Evenement\EventEmitter;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 
-final class ChangesListener
+final class ChangesListener extends EventEmitter
 {
     private const WATCHER_SCRIPT = '/watcher.php';
 
@@ -20,14 +21,14 @@ final class ChangesListener
         $this->watchList = $watchList;
     }
 
-    public function start(callable $onChange): void
+    public function start(): void
     {
         $watcherProcess = new Process($this->scriptToRun());
         $watcherProcess->start($this->loop);
 
-        $watcherProcess->stdout->on('data', static function ($data) use ($onChange) {
+        $watcherProcess->stdout->on('data', function ($data) {
             if ((bool)$data) {
-                $onChange();
+                $this->emit('change');
             }
         });
     }
