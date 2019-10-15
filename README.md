@@ -162,8 +162,7 @@ php-watcher server.php --delay 2.5
 ## Default executable
 
 By default, PHP-Watcher uses `php` bin executable to run your scripts. If you
- want to provide your own executable use `--exec` option or `executable
- ` param in config file. This is particularly useful if you're working with
+ want to provide your own executable use `--exec` option or `executable` param in config file. This is particularly useful if you're working with
   several PHP versions.
 
 ```yml
@@ -175,6 +174,16 @@ or using CLI:
 ```bash
 php-watcher server.php --exec php7
 ```
+
+### Running non-php scripts
+
+PHP-Watcher can also be used to execute and monitor other non-php programs. For example, you can use PHP-Watcher to listen to `*.js` files and use `node` executable to run them:
+
+```bash
+php-watcher server.js --exec node --watch app
+```
+
+The command above uses NodeJS to start `server.js` and then listens to changes in `app` directory.
 
 ## Gracefully reloading down your script
 
@@ -188,8 +197,6 @@ php-watcher --signal SIGTERM server.php
 Your application can handle the signal as follows:
 
 ```php
-<?php
-
 declare(ticks = 1);
 pcntl_signal(SIGTERM, 'terminationHandler');
 
