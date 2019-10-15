@@ -31,6 +31,32 @@ final class ConfigTest extends WatcherTestCase
         $this->wait();
 
         $output = $watcher->getOutput();
-        $this->assertStringContainsString('directory-to-watch', $output);
+        $this->assertStringContainsString('watching: directory-to-watch', $output);
+    }
+
+    /** @test */
+    public function it_uses_values_from_config(): void
+    {
+        $configFile = Filesystem::createConfigFile(['watch' => ['first', 'second']]);
+        $fileToWatch = Filesystem::createHelloWorldPHPFile();
+
+        $watcher = (new WatcherRunner())->run($fileToWatch, ['--config', $configFile]);
+        $this->wait();
+
+        $output = $watcher->getOutput();
+        $this->assertStringContainsString('watching: first, second', $output);
+    }
+
+    /** @test */
+    public function command_line_options_override_values_from_config(): void
+    {
+        $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
+        $fileToWatch = Filesystem::createHelloWorldPHPFile();
+
+        $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch', $configFile]);
+        $this->wait();
+
+        $output = $watcher->getOutput();
+        $this->assertStringContainsString("watching: $configFile", $output);
     }
 }
