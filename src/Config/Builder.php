@@ -17,7 +17,7 @@ final class Builder
     {
         $valuesFromFile = $this->getValuesFromConfigFile($input);
         $commandLineValues = $this->valuesFromCommandLineArgs($input);
-        $configValues = array_replace_recursive($valuesFromFile, $commandLineValues);
+        $configValues = $this->mergeConfigValues($valuesFromFile, $commandLineValues);
 
         return new Config(
             $configValues['script'],
@@ -92,5 +92,19 @@ final class Builder
             $valuesFromFile = $this->valuesFromConfigFile($configFilePath);
         }
         return $valuesFromFile;
+    }
+
+    private function mergeConfigValues(array $valuesFromFile, array $commandLineValues): array
+    {
+        $configValues = [];
+        foreach ($commandLineValues as $key => $value) {
+            if (empty($value) && isset($valuesFromFile[$key])) {
+                $configValues[$key] = $valuesFromFile[$key];
+            } else {
+                $configValues[$key] = $commandLineValues[$key];
+            }
+        }
+
+        return $configValues;
     }
 }
