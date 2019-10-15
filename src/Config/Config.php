@@ -6,12 +6,15 @@ final class Config
 {
     private const DEFAULT_PHP_EXECUTABLE = 'php';
     private const DEFAULT_DELAY_IN_SECONDS = 0.25;
-
-    private $delay;
+    private const DEFAULT_SIGNAL = SIGINT;
 
     private $script;
 
     private $phpExecutable;
+
+    private $signal;
+
+    private $delay;
 
     /**
      * @var string[]
@@ -20,11 +23,12 @@ final class Config
 
     private $watchList;
 
-    public function __construct(string $script, ?string $phpExecutable, ?float $delay, array $arguments, WatchList $watchList)
+    public function __construct(string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, WatchList $watchList)
     {
         $this->script = $script;
-        $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
         $this->phpExecutable = $phpExecutable ?: self::DEFAULT_PHP_EXECUTABLE;
+        $this->signal = $signal ?: self::DEFAULT_SIGNAL;
+        $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
         $this->arguments = $arguments;
         $this->watchList = $watchList;
     }
@@ -36,11 +40,22 @@ final class Config
 
     public function command(): string
     {
-        return implode(' ', [$this->phpExecutable, $this->script, implode(' ', $this->arguments)]);
+        $commandline = implode(' ', [$this->phpExecutable, $this->script, implode(' ', $this->arguments)]);
+        if ('\\' !== DIRECTORY_SEPARATOR) {
+            // exec is mandatory to deal with sending a signal to the process
+            $commandline = 'exec '.$commandline;
+        }
+
+        return $commandline;
     }
 
     public function delay(): float
     {
         return $this->delay;
+    }
+
+    public function signal(): int
+    {
+        return $this->signal;
     }
 }

@@ -22,7 +22,7 @@ final class Watcher
         $this->filesystemListener = $filesystemListener;
     }
 
-    public function startWatching(Process $process, float $delayToRestart): void
+    public function startWatching(Process $process, int $signal, float $delayToRestart): void
     {
         $this->screen->start($process->getCommand());
         $this->screen->showSpinner($this->loop);
@@ -30,7 +30,7 @@ final class Watcher
 
         $this->filesystemListener->start();
         $this->filesystemListener->on('change', function () use ($process, $delayToRestart) {
-            $this->restartProcess($process, $delayToRestart);
+            $this->restartProcess($process, $signal, $delayToRestart);
         });
 
         $this->loop->run();
@@ -42,9 +42,9 @@ final class Watcher
         $this->screen->subscribeToProcessOutput($process);
     }
 
-    private function restartProcess(Process $process, float $delayToRestart): void
+    private function restartProcess(Process $process, int $signal, float $delayToRestart): void
     {
-        $process->terminate();
+        $process->terminate($signal);
         $this->screen->restarting($process->getCommand());
 
         $this->loop->addTimer($delayToRestart, function () use ($process) {
