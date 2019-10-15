@@ -1,3 +1,6 @@
+## 0.4.1 (2019-10-15)
+* Fix: CLI empty options override values from config file [#30](https://github.com/seregazhuk/php-watcher/pull/30)
+
 ## 0.4.0 (2019-10-15)
 * Fix: allow to listen to signals when running inside the docker container [#27](https://github.com/seregazhuk/php-watcher/pull/27)
 * Feature: send custom signals to restart the app [#27](https://github.com/seregazhuk/php-watcher/pull/27)
