@@ -180,7 +180,7 @@ php-watcher server.php --exec php7
 PHP-Watcher can also be used to execute and monitor other non-php programs. For example, you can use PHP-Watcher to listen to `*.js` files and use `node` executable to run them:
 
 ```bash
-php-watcher server.js --exec node --watch app
+php-watcher server.js --exec node --watch app --ext=js
 ```
 
 The command above uses NodeJS to start `server.js` and then listens to changes in `app` directory.
@@ -198,6 +198,7 @@ Your application can handle the signal as follows:
 
 ```php
 declare(ticks = 1);
+
 pcntl_signal(SIGTERM, 'terminationHandler');
 
 function terminationHandler()
