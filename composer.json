@@ -26,7 +26,6 @@
     "require": {
         "php": "^7.2",
         "yosymfony/resource-watcher": "^2.0",
-        "symfony/process": "^4.3",
         "symfony/console": "^4.3",
         "react/event-loop": "^1.1",
         "symfony/yaml": "^4.3",
@@ -48,6 +47,7 @@
         "php-watcher"
     ],
     "require-dev": {
+        "symfony/process": "^4.3",
         "phpunit/phpunit": "^8.0"
     },
     "minimum-stability": "alpha"
