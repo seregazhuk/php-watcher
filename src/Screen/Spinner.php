@@ -68,14 +68,21 @@ final class Spinner
         197
     ];
 
+    private $cursor;
+
     private $currentFrameIndex = 0;
     private $currentColorIndex = 0;
 
+    public function __construct()
+    {
+        $this->cursor = new Cursor();
+    }
+
     public function spin(): void
     {
+        $this->erase();
         $this->output();
         $this->increment();
-        $this->hideCursor();
     }
 
     public function interval(): float
@@ -85,12 +92,12 @@ final class Spinner
 
     public function erase(): void
     {
-        echo "\033[1K";
+        $this->cursor->erase();
     }
 
-    private function currentColor(): string
+    private function currentColor(): int
     {
-        return '38;5;' . self::COLORS[$this->currentColorIndex]. 'm';
+        return self::COLORS[$this->currentColorIndex];
     }
 
     private function currentFrame(): string
@@ -100,12 +107,9 @@ final class Spinner
 
     private function output(): void
     {
-        echo "\e[{$this->currentColor()}{$this->currentFrame()}\e[0m\r";
-    }
-
-    private function hideCursor(): void
-    {
-        echo "\033[?25l";
+        $this->cursor->write($this->currentColor(), $this->currentFrame());
+        $this->cursor->hide();
+        $this->cursor->startOfLine();
     }
 
     private function increment(): void
