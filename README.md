@@ -207,7 +207,7 @@ function terminationHandler()
 }
 ```
 
-By default PHP-watcher sends SIGINT signal.
+By default PHP-watcher sends `SIGINT` signal.
 
 # License
 
