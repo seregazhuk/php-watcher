@@ -1,3 +1,8 @@
+## 0.4.2 (2019-10-18)
+* Fix: Make script argument required via cli [#36](https://github.com/seregazhuk/php-watcher/pull/36)
+* Fix: Move symfony process to dev dependencies [#34](https://github.com/seregazhuk/php-watcher/pull/34) 
+* Fix: improvements in spinner rendering [#32](https://github.com/seregazhuk/php-watcher/pull/32)
+
 ## 0.4.1 (2019-10-15)
 * Fix: CLI empty options override values from config file [#30](https://github.com/seregazhuk/php-watcher/pull/30)
 
