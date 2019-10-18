@@ -21,7 +21,7 @@ final class WatcherCommand extends BaseCommand
     {
         $this->setName('watch')
             ->setDescription('Restart PHP application once the source code changes.')
-            ->addArgument('script', InputArgument::OPTIONAL, 'PHP script to run')
+            ->addArgument('script', InputArgument::REQUIRED, 'Script to run')
             ->addOption('watch', '-w', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to watch')
             ->addOption('ext', '-e', InputOption::VALUE_OPTIONAL, 'Extensions to watch', '')
             ->addOption('ignore', '-i', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to ignore', [])
