@@ -108,7 +108,7 @@ By default, PHP-Watcher looks for files with the `.php` extension. If you use
   the extension of `.php` and `.yml`:
 
 ```bash
-php-watcher server.php --ext=php,js
+php-watcher server.php --ext=php,yml
 ```
 
 Now PHP-Watcher will restart on any changes to files in the directory (or
