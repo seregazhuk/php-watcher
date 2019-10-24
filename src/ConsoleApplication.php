@@ -6,9 +6,12 @@ use Symfony\Component\Console\Application;
 
 final class ConsoleApplication extends Application
 {
+    public const NAME = 'PHP-Watcher';
+    public const VERSION = '0.4.2';
+
     public function __construct()
     {
-        parent::__construct('PHP-Watcher', '0.4.2');
+        parent::__construct(self::NAME, self::VERSION);
         $this->add(new WatcherCommand());
     }
 

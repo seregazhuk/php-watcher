@@ -5,24 +5,18 @@ namespace seregazhuk\PhpWatcher\Screen;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use Symfony\Component\Console\Application;
+use seregazhuk\PhpWatcher\ConsoleApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
 {
     private $output;
 
-    private $appName;
-
-    private $appVersion;
-
     private $spinner;
 
-    public function __construct(SymfonyStyle $output, Application $application)
+    public function __construct(SymfonyStyle $output)
     {
         $this->output = $output;
-        $this->appName = $application->getName();
-        $this->appVersion = $application->getVersion();
         $this->spinner = new Spinner();
     }
 
@@ -44,7 +38,7 @@ final class Screen
 
     private function title(): void
     {
-        $this->comment($this->appVersion);
+        $this->comment(ConsoleApplication::NAME);
     }
 
     private function comment(string $text): void
@@ -65,12 +59,15 @@ final class Screen
         $this->info(sprintf('starting `%s`', trim($command)));
     }
 
-    public function restarting(string $command): void
+    public function restarting(string $command = null): void
     {
         $this->spinner->erase();
         $this->output->writeln('');
         $this->info('restarting due to changes...');
-        $this->start($command);
+
+        if ($command !== null) {
+            $this->start($command);
+        }
     }
 
     public function subscribeToProcessOutput(Process $process): void
@@ -89,6 +86,6 @@ final class Screen
 
     private function message(string $text): string
     {
-        return sprintf('[%s] %s', $this->appName, $text);
+        return sprintf('[%s] %s', ConsoleApplication::VERSION, $text);
     }
 }
