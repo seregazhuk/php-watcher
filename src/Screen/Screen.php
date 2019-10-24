@@ -38,7 +38,7 @@ final class Screen
 
     private function title(): void
     {
-        $this->comment(ConsoleApplication::NAME);
+        $this->comment(ConsoleApplication::VERSION);
     }
 
     private function comment(string $text): void
@@ -86,6 +86,6 @@ final class Screen
 
     private function message(string $text): string
     {
-        return sprintf('[%s] %s', ConsoleApplication::VERSION, $text);
+        return sprintf('[%s] %s', ConsoleApplication::NAME, $text);
     }
 }
