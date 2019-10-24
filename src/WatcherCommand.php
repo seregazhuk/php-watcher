@@ -37,7 +37,7 @@ final class WatcherCommand extends BaseCommand
         $config = (new Builder())->build($input);
         $loop = Factory::create();
 
-        $screen = new Screen(new SymfonyStyle($input, $output), $this->getApplication());
+        $screen = new Screen(new SymfonyStyle($input, $output));
         $filesystem = new ChangesListener($loop, $config->watchList());
         $watcher = new Watcher($loop, $screen, $filesystem);
 
