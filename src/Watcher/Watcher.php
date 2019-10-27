@@ -5,7 +5,7 @@ namespace seregazhuk\PhpWatcher\Watcher;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
-use seregazhuk\PhpWatcher\Screen\Screen;
+use seregazhuk\PhpWatcher\Screen;
 
 final class Watcher
 {

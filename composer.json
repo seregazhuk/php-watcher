@@ -31,7 +31,8 @@
         "symfony/yaml": "^4.3",
         "react/child-process": "^0.6.1",
         "ext-json": "*",
-        "ext-pcntl": "*"
+        "ext-pcntl": "*",
+        "alecrabbit/php-cli-snake": "^0.3.0"
     },
     "autoload": {
         "psr-4": {
