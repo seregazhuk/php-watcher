@@ -15,6 +15,6 @@ $watcher = Factory::create($watchList);
 
 while (true) {
     echo $watcher->findChanges()->hasChanges() ? 1: 0;
-    usleep(2500000);
+    usleep(1500000);
 }
 

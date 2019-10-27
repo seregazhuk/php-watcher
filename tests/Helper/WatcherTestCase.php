@@ -14,6 +14,6 @@ abstract class WatcherTestCase extends TestCase
 
     protected function wait(): void
     {
-        usleep(1500000);
+        usleep(2000000);
     }
 }

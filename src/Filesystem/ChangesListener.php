@@ -35,6 +35,6 @@ final class ChangesListener extends EventEmitter
 
     private function scriptToRun(): string
     {
-        return sprintf('php %s "%s"', __DIR__ . self::WATCHER_SCRIPT, addslashes($this->watchList->toJson()));
+        return sprintf('exec php %s "%s"', __DIR__ . self::WATCHER_SCRIPT, addslashes($this->watchList->toJson()));
     }
 }
