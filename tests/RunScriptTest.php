@@ -20,4 +20,16 @@ final class RunScriptTest extends WatcherTestCase
         $this->assertStringContainsString("starting `php $scriptToRun`", $output);
         $this->assertStringContainsString('Hello, world', $output);
     }
+
+    /** @test */
+    public function it_outputs_the_script_stderr(): void
+    {
+        $scriptToRun = Filesystem::createStdErrorPHPFile();
+        $watcher = (new WatcherRunner)->run($scriptToRun);
+
+        $this->wait();
+        $output = $watcher->getOutput();
+
+        $this->assertStringContainsString('Some error', $output);
+    }
 }
