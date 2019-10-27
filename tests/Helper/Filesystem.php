@@ -24,6 +24,14 @@ final class Filesystem
         return $name;
     }
 
+    public static function createStdErrorPHPFile(): string
+    {
+        $name = self::FIXTURES_DIR . 'test.php';
+        self::createFile($name, '<?php fwrite(STDERR, "Some error");');
+
+        return $name;
+    }
+
     public static function createHelloWorldPHPFileWithSignalsHandling(): string
     {
         $name = self::FIXTURES_DIR . 'test.php';

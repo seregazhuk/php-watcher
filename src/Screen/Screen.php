@@ -75,6 +75,9 @@ final class Screen
         $process->stdout->on('data', static function ($data) {
             echo $data;
         });
+        $process->stderr->on('data', static function ($data) {
+            echo $data;
+        });
     }
 
     public function showSpinner(LoopInterface $loop): void
