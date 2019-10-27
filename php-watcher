@@ -2,11 +2,6 @@
 
 <?php
 
-declare(ticks = 1);
-
-pcntl_signal(SIGTERM, "restore_cursor");
-pcntl_signal(SIGINT, "restore_cursor");
-
 use seregazhuk\PhpWatcher\WatcherCommand;
 
 if (file_exists(__DIR__.'/vendor/autoload.php')) {
@@ -21,8 +16,3 @@ $application->add($command);
 
 $application->setDefaultCommand($command->getName(), true);
 $application->run();
-
-function restore_cursor() {
-  echo "\033[?25h";
-  exit;
-}
