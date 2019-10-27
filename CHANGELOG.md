@@ -1,3 +1,8 @@
+## 0.4.3 (2019-10-28)
+* Improved: reused a package for spinner implementation [#45](https://github.com/seregazhuk/php-watcher/pull/45)
+* Fix: Output stderr of the underlying script [#44](https://github.com/seregazhuk/php-watcher/pull/44) 
+* Improved: Improve file changes watching [#42](https://github.com/seregazhuk/php-watcher/pull/42)
+
 ## 0.4.2 (2019-10-18)
 * Fix: Make script argument required via cli [#36](https://github.com/seregazhuk/php-watcher/pull/36)
 * Fix: Move symfony process to dev dependencies [#34](https://github.com/seregazhuk/php-watcher/pull/34) 
