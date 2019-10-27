@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Screen;
+namespace seregazhuk\PhpWatcher;
 
+use AlecRabbit\Snake\Spinner;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\ConsoleApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
@@ -14,10 +14,10 @@ final class Screen
 
     private $spinner;
 
-    public function __construct(SymfonyStyle $output)
+    public function __construct(SymfonyStyle $output, Spinner $spinner)
     {
         $this->output = $output;
-        $this->spinner = new Spinner();
+        $this->spinner = $spinner;
     }
 
     public function showOptions(WatchList $watchList): void
@@ -82,6 +82,7 @@ final class Screen
 
     public function showSpinner(LoopInterface $loop): void
     {
+        $this->spinner->begin();
         $loop->addPeriodicTimer($this->spinner->interval(), function () {
             $this->spinner->spin();
         });
