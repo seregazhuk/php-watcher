@@ -1,3 +1,6 @@
+## 0.5.0 (2019-11-01)
+* Feature: watching whether the script is alive [#47](https://github.com/seregazhuk/php-watcher/pull/47)
+
 ## 0.4.3 (2019-10-28)
 * Improved: reused a package for spinner implementation [#45](https://github.com/seregazhuk/php-watcher/pull/45)
 * Fix: Output stderr of the underlying script [#44](https://github.com/seregazhuk/php-watcher/pull/44) 
