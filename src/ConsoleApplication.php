@@ -7,7 +7,7 @@ use Symfony\Component\Console\Application;
 final class ConsoleApplication extends Application
 {
     public const NAME = 'PHP-Watcher';
-    public const VERSION = '0.4.3';
+    public const VERSION = '0.5.0';
 
     public function __construct()
     {
