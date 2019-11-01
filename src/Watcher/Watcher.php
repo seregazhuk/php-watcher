@@ -45,6 +45,7 @@ final class Watcher
     private function restartProcess(Process $process, int $signal, float $delayToRestart): void
     {
         $process->terminate($signal);
+        $process->removeAllListeners();
         $this->screen->restarting($process->getCommand());
 
         $this->loop->addTimer($delayToRestart, function () use ($process) {

@@ -24,6 +24,14 @@ final class Filesystem
         return $name;
     }
 
+    public static function createPHPFileThatCrashes(): string
+    {
+        $name = self::FIXTURES_DIR . 'test.php';
+        self::createFile($name, '<?php exit(1);');
+
+        return $name;
+    }
+
     public static function createStdErrorPHPFile(): string
     {
         $name = self::FIXTURES_DIR . 'test.php';
