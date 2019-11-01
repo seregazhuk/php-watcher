@@ -209,6 +209,15 @@ function terminationHandler()
 
 By default PHP-watcher sends `SIGINT` signal.
 
+## Automatic restart
+
+PHP-watcher was originally written to restart long-running processes such as web servers, but 
+it also supports apps that cleanly exit. If your script exits cleanly, the watcher will continue 
+to monitor the directory (or directories) and restart the script if there are any changes. If the
+script crashes PHP-watcher will notify you about that.
+
+![app exit](images/exit.svg)
+
 # License
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)

@@ -53,6 +53,12 @@ final class Screen
         $this->output->writeln($text);
     }
 
+    private function warning(string $text): void
+    {
+        $text = sprintf('<fg=red>%s</>', $this->message($text));
+        $this->output->writeln($text);
+    }
+
     public function start(string $command): void
     {
         $command = str_replace('exec', '', $command);
@@ -77,6 +83,14 @@ final class Screen
         });
         $process->stderr->on('data', static function ($data) {
             echo $data;
+        });
+
+        $process->on('exit', function($exitCode) {
+            if ($exitCode === 0) {
+                $this->info('clean exit - waiting for changes before restart');
+            } else {
+                $this->warning('app crashed - waiting for file changes before starting...');
+            }
         });
     }
 
