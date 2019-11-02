@@ -2,11 +2,14 @@
 
 namespace seregazhuk\PhpWatcher;
 
-use AlecRabbit\Snake\Spinner;
+use AlecRabbit\Snake\Contracts\SpinnerInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\Factory;
+use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Screen\Screen;
+use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
 use seregazhuk\PhpWatcher\Watcher\Watcher;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,17 +32,19 @@ final class WatcherCommand extends BaseCommand
             ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
             ->addOption('signal', null, InputOption::VALUE_OPTIONAL, 'Signal to reload the app')
             ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
-            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file');
+            ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file')
+            ->addOption('no-spinner', null, InputOption::VALUE_OPTIONAL, 'Remove spinner from output', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $loop = Factory::create();
-        $loop->addSignal(SIGINT, [$this, 'stop']);
-        $loop->addSignal(SIGTERM, [$this, 'stop']);
-
         $config = (new Builder())->build($input);
-        $screen = new Screen(new SymfonyStyle($input, $output), new Spinner());
+        $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
+
+        $this->addTerminationListeners($loop, $spinner);
+
+        $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
         $filesystem = new ChangesListener($loop, $config->watchList());
         $watcher = new Watcher($loop, $screen, $filesystem);
 
@@ -48,9 +53,17 @@ final class WatcherCommand extends BaseCommand
         $watcher->startWatching($process, $config->signal(), $config->delay());
     }
 
-    public function stop(): void
+    /**
+     * When terminating the watcher we need to manually restore the cursor after the spinner.
+     */
+    private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner): void
     {
-        (new Spinner())->end();
-        exit();
+        $func = static function (int $signal) use ($spinner) {
+            $spinner->end();
+            exit($signal);
+        };
+
+        $loop->addSignal(SIGINT, $func);
+        $loop->addSignal(SIGTERM, $func);
     }
 }

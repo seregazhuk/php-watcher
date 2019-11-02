@@ -21,15 +21,18 @@ final class Config
      */
     private $arguments;
 
+    private $spinnerDisabled;
+
     private $watchList;
 
-    public function __construct(string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, WatchList $watchList)
+    public function __construct(string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
     {
         $this->script = $script;
         $this->phpExecutable = $phpExecutable ?: self::DEFAULT_PHP_EXECUTABLE;
         $this->signal = $signal ?: self::DEFAULT_SIGNAL;
         $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
         $this->arguments = $arguments;
+        $this->spinnerDisabled = $spinnerDisabled;
         $this->watchList = $watchList;
     }
 
@@ -57,5 +60,10 @@ final class Config
     public function signal(): int
     {
         return $this->signal;
+    }
+
+    public function spinnerDisabled(): bool
+    {
+        return $this->spinnerDisabled;
     }
 }
