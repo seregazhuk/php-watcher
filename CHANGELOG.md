@@ -1,3 +1,6 @@
+## 0.5.1 (2019-11-03)
+* Fix: ability to disable the spinner [#48](https://github.com/seregazhuk/php-watcher/pull/48)
+
 ## 0.5.0 (2019-11-01)
 * Feature: watching whether the script is alive [#47](https://github.com/seregazhuk/php-watcher/pull/47)
 
