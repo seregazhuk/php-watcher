@@ -32,7 +32,7 @@
         "react/child-process": "^0.6.1",
         "ext-json": "*",
         "ext-pcntl": "*",
-        "alecrabbit/php-cli-snake": "^0.3.0"
+        "alecrabbit/php-cli-snake": "^0.5"
     },
     "autoload": {
         "psr-4": {

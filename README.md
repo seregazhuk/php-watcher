@@ -218,6 +218,17 @@ script crashes PHP-watcher will notify you about that.
 
 ![app exit](images/exit.svg)
 
+## Spinner
+
+By default the watcher outputs a nice spinner which indicates that the process is running
+and watching your files. But if your system doesn't support ansi coded the watcher
+will try to detect it and disable the spinner. Or you can always disable the spinner
+manually with option '--no-spinner':
+
+```bash
+php-watcher server.php --no-spinner
+```
+
 # License
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)

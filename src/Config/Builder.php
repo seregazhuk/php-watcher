@@ -25,6 +25,7 @@ final class Builder
             $configValues['signal'],
             $configValues['delay'],
             $configValues['arguments'],
+            $configValues['no-spinner'],
             new WatchList(
                 $configValues['watch'],
                 $configValues['extensions'],
@@ -73,6 +74,7 @@ final class Builder
             'signal' => $input->getOption('signal') ? constant($input->getOption('signal')) : null,
             'delay' => (float)$input->getOption('delay'),
             'arguments' => $input->getOption('arguments'),
+            'no-spinner' => $input->getOption('no-spinner') !== false,
         ];
     }
 
