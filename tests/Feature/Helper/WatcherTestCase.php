@@ -27,12 +27,12 @@ abstract class WatcherTestCase extends TestCase
     public function assertOutputContains(string $string): void
     {
         $output = $this->watcherRunner->getOutput();
-        $this->assertOutputContains($string, $output);
+        $this->assertStringContainsString($string, $output);
     }
 
     public function assertOutputDoesntContain(string $string): void
     {
         $output = $this->watcherRunner->getOutput();
-        $this->assertOutputContains($string, $output);
+        $this->assertStringNotContainsString($string, $output);
     }
 }
