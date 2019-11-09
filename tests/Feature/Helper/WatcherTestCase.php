@@ -4,7 +4,6 @@ namespace tests\Feature\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
-use tests\Helper\WithFilesystem;
 
 abstract class WatcherTestCase extends TestCase
 {
@@ -17,7 +16,7 @@ abstract class WatcherTestCase extends TestCase
 
     protected function wait(): void
     {
-        usleep(2000000);
+        usleep(2500000);
     }
 
     protected function watch(string $scriptToRun, array $options = []): void {

@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
 
 
-namespace tests\Unit;
+namespace tests\Feature;
 
 
 use PHPUnit\Framework\TestCase;
 use React\EventLoop\Factory;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
-use tests\Helper\Filesystem;
-use tests\Helper\WithFilesystem;
+use tests\Feature\Helper\Filesystem;
+use tests\Feature\Helper\WithFilesystem;
 use function \Clue\React\Block\sleep;
 
 final class ChangesListenerTest extends TestCase
@@ -25,10 +25,10 @@ final class ChangesListenerTest extends TestCase
 
         $loop->addTimer(1, [Filesystem::class, 'createHelloWorldPHPFile']);
         $eventWasEmitted = false;
-        $listener->on('change', function () use (&$eventWasEmitted) {
+        $listener->on('change', static function () use (&$eventWasEmitted) {
             $eventWasEmitted = true;
         });
-        sleep(3, $loop);
+        sleep(4, $loop); // to be sure that changes have been detected
 
         $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
     }
