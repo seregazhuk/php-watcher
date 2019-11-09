@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace tests;
+namespace tests\Feature;
 
+use tests\Feature\Helper\WatcherTestCase;
 use tests\Helper\Filesystem;
-use tests\Helper\WatcherRunner;
-use tests\Helper\WatcherTestCase;
 
 final class SignalTest extends WatcherTestCase
 {
@@ -16,14 +15,12 @@ final class SignalTest extends WatcherTestCase
         }
 
         $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
-        $watcher = (new WatcherRunner)->run($scriptToRun, ['--signal', 'SIGTERM', '--watch', __DIR__]);
+        $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', __DIR__]);
         $this->wait();
 
         Filesystem::createHelloWorldPHPFile();
         $this->wait();
 
-        $output = $watcher->getOutput();
-
-        $this->assertStringContainsString(SIGTERM . ' signal was received', $output);
+        $this->assertOutputContains(SIGTERM . ' signal was received');
     }
 }

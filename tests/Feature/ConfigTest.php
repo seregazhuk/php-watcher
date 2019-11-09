@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace tests;
+namespace tests\Feature;
 
+use tests\Feature\Helper\WatcherTestCase;
 use tests\Helper\Filesystem;
 use tests\Helper\WatcherRunner;
-use tests\Helper\WatcherTestCase;
 
 final class ConfigTest extends WatcherTestCase
 {
@@ -14,11 +14,10 @@ final class ConfigTest extends WatcherTestCase
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
-        $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch', 'tests', '--config', $configFile]);
+        $this->watch($fileToWatch, ['--watch', 'tests', '--config', $configFile]);
         $this->wait();
 
-        $output = $watcher->getOutput();
-        $this->assertStringNotContainsString('directory-to-watch', $output);
+        $this->assertOutputDoesntContain('directory-to-watch');
     }
 
     /** @test */
@@ -27,11 +26,10 @@ final class ConfigTest extends WatcherTestCase
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
-        $watcher = (new WatcherRunner())->run($fileToWatch, ['--config', $configFile]);
+        $this->watch($fileToWatch, ['--config', $configFile]);
         $this->wait();
 
-        $output = $watcher->getOutput();
-        $this->assertStringContainsString('watching: directory-to-watch', $output);
+        $this->assertOutputContains('watching: directory-to-watch');
     }
 
     /** @test */
@@ -40,11 +38,10 @@ final class ConfigTest extends WatcherTestCase
         $configFile = Filesystem::createConfigFile(['watch' => ['first', 'second']]);
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
-        $watcher = (new WatcherRunner())->run($fileToWatch, ['--config', $configFile]);
+        $this->watch($fileToWatch, ['--config', $configFile]);
         $this->wait();
 
-        $output = $watcher->getOutput();
-        $this->assertStringContainsString('watching: first, second', $output);
+        $this->assertOutputContains('watching: first, second');
     }
 
     /** @test */
@@ -53,10 +50,9 @@ final class ConfigTest extends WatcherTestCase
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
 
-        $watcher = (new WatcherRunner())->run($fileToWatch, ['--watch', $configFile]);
+        $this->watch($fileToWatch, ['--watch', $configFile]);
         $this->wait();
 
-        $output = $watcher->getOutput();
-        $this->assertStringContainsString("watching: $configFile", $output);
+        $this->assertOutputContains("watching: $configFile");
     }
 }
