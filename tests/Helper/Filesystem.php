@@ -42,7 +42,7 @@ final class Filesystem
 
     public static function createHelloWorldPHPFileWithSignalsHandling(): string
     {
-        $name = self::FIXTURES_DIR . 'test.php';
+        $name = self::FIXTURES_DIR . 'test_signals.php';
         $code = <<<CODE
 <?php declare(ticks = 1);
 

@@ -15,7 +15,7 @@ final class SignalTest extends WatcherTestCase
         }
 
         $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
-        $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', __DIR__]);
+        $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', Filesystem::fixturesDir()]);
         $this->wait();
 
         Filesystem::createHelloWorldPHPFile();
