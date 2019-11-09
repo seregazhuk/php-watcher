@@ -11,7 +11,7 @@ final class WatchDirectoriesTest extends WatcherTestCase
     public function it_watches_changes_in_a_certain_dir(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
-        $this->watch($fileToWatch, ['--watch', __DIR__]);
+        $this->watch($fileToWatch, ['--watch', Filesystem::fixturesDir()]);
         $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
@@ -23,7 +23,7 @@ final class WatchDirectoriesTest extends WatcherTestCase
     public function it_reloads_by_changes_in_a_watched_dir(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
-        $this->watch($fileToWatch, ['--watch', __DIR__]);
+        $this->watch($fileToWatch, ['--watch', Filesystem::fixturesDir()]);
         $this->wait();
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
