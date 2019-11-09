@@ -2,18 +2,11 @@
 
 namespace tests\Helper;
 
-use PHPUnit\Framework\TestCase;
-
-abstract class WatcherTestCase extends TestCase
+trait WithFilesystem
 {
     protected function tearDown(): void
     {
         Filesystem::clear();
         parent::tearDown();
-    }
-
-    protected function wait(): void
-    {
-        usleep(2000000);
     }
 }
