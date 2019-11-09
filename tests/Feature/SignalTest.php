@@ -3,7 +3,7 @@
 namespace tests\Feature;
 
 use tests\Feature\Helper\WatcherTestCase;
-use tests\Helper\Filesystem;
+use tests\Feature\Helper\Filesystem;
 
 final class SignalTest extends WatcherTestCase
 {
