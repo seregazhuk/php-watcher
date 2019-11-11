@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Watcher;
+namespace seregazhuk\PhpWatcher\Filesystem;
 
 final class WatchPath
 {

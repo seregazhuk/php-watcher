@@ -3,7 +3,6 @@
 namespace seregazhuk\PhpWatcher\Filesystem;
 
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Watcher\WatchPath;
 use Symfony\Component\Finder\Finder;
 use Yosymfony\ResourceWatcher\Crc32ContentHash;
 use Yosymfony\ResourceWatcher\ResourceCacheMemory;
