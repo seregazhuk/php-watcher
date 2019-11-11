@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Watcher;
+namespace seregazhuk\PhpWatcher;
 
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;

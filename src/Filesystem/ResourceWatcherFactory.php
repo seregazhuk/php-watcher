@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Watcher;
+namespace seregazhuk\PhpWatcher\Filesystem;
 
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Finder\Finder;
@@ -31,9 +31,11 @@ final class ResourceWatcherFactory
 
     private static function extractWatchPathsFromList(WatchList $watchList): array
     {
-        return array_map(function ($path) {
-            return new WatchPath($path);
-        }, $watchList->paths());
+        return array_map(
+            static function ($path) {
+                return new WatchPath($path);
+            }, $watchList->paths()
+        );
     }
 
     private static function makeDefaultFinder(WatchList $watchList): Finder

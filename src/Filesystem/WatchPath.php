@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Watcher;
+namespace seregazhuk\PhpWatcher\Filesystem;
 
 final class WatchPath
 {
@@ -16,14 +16,14 @@ final class WatchPath
         return !$this->isDirectory() || !file_exists($this->pattern);
     }
 
-    public function directoryPath(): string
+    private function directoryPart(): string
     {
         return pathinfo($this->pattern, PATHINFO_DIRNAME);
     }
 
     public function fileName(): string
     {
-        return pathinfo($this->pattern, PATHINFO_FILENAME);
+        return pathinfo($this->pattern, PATHINFO_BASENAME);
     }
 
     private function isDirectory(): bool
@@ -33,6 +33,6 @@ final class WatchPath
 
     public function path(): string
     {
-        return $this->isDirectory() ? $this->pattern : $this->directoryPath();
+        return $this->isDirectory() ? $this->pattern : $this->directoryPart();
     }
 }

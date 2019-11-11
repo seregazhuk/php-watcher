@@ -10,7 +10,6 @@ use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
-use seregazhuk\PhpWatcher\Watcher\Watcher;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

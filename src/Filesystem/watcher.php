@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Watcher\ResourceWatcherFactory;
+use seregazhuk\PhpWatcher\Filesystem\ResourceWatcherFactory;
 
 if (file_exists(__DIR__ . '/../../vendor/autoload.php')) {
 	require __DIR__ . '/../../vendor/autoload.php';
