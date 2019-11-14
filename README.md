@@ -11,6 +11,9 @@
 
 [![License](https://poser.pugx.org/seregazhuk/php-watcher/license)](https://packagist.org/packages/seregazhuk/php-watcher)
 
+![watcher logo](images/watcher.gif)
+
+
 PHP-watcher helps develop long-running PHP applications by automatically
  restarting them when file changes in the directory are detected.
  
