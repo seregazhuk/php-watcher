@@ -33,7 +33,7 @@ final class WatcherCommand extends BaseCommand
             ->addOption('signal', null, InputOption::VALUE_OPTIONAL, 'Signal to reload the app')
             ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
             ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file')
-            ->addOption('no-spinner', null, InputOption::VALUE_OPTIONAL, 'Remove spinner from output', false);
+            ->addOption('no-spinner', null, InputOption::VALUE_NONE, 'Remove spinner from output');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

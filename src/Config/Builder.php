@@ -67,7 +67,7 @@ final class Builder
             'signal' => $input->getOption('signal') ? constant($input->getOption('signal')) : null,
             'delay' => (float)$input->getOption('delay'),
             'arguments' => $input->getOption('arguments'),
-            'no-spinner' => $input->getOption('no-spinner') !== false,
+            'no-spinner' => $input->getOption('no-spinner'),
         ];
     }
 }
