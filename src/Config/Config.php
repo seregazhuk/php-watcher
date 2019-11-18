@@ -25,7 +25,7 @@ final class Config
 
     private $watchList;
 
-    public function __construct(string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
+    public function __construct(?string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
     {
         $this->script = $script;
         $this->phpExecutable = $phpExecutable ?: self::DEFAULT_PHP_EXECUTABLE;
@@ -34,6 +34,23 @@ final class Config
         $this->arguments = $arguments;
         $this->spinnerDisabled = $spinnerDisabled;
         $this->watchList = $watchList;
+    }
+
+    public static function fromArray(array $values): self
+    {
+        return new self(
+            $values['script'] ?? null,
+            $values['executable'] ?? null,
+            $values['signal'] ?? null,
+            $values['delay'] ?? null,
+            $values['arguments'] ?? [],
+            $values['no-spinner'] ?? false,
+            new WatchList(
+                $values['watch'] ?? [],
+                $values['extensions'] ?? [],
+                $values['ignore'] ?? []
+            )
+        );
     }
 
     public function watchList(): WatchList
@@ -65,5 +82,18 @@ final class Config
     public function spinnerDisabled(): bool
     {
         return $this->spinnerDisabled;
+    }
+
+    public function merge(self $another): self
+    {
+        return new self(
+            empty($this->script) && $another->script ? $another->script : $this->script,
+            $this->phpExecutable === self::DEFAULT_PHP_EXECUTABLE && $another->phpExecutable ? $another->phpExecutable: $this->phpExecutable,
+            $this->signal === self::DEFAULT_SIGNAL && $another->signal ? $another->signal : $this->signal,
+            $this->delay === self::DEFAULT_DELAY_IN_SECONDS && $another->delay ? $another->delay: $this->delay,
+            empty($this->arguments) && !empty($another->arguments) ? $another->arguments : $this->arguments,
+            $another->spinnerDisabled ?: $this->spinnerDisabled,
+            $another->watchList->merge($this->watchList)
+        );
     }
 }

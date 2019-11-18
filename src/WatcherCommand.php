@@ -7,6 +7,7 @@ use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
+use seregazhuk\PhpWatcher\Config\Config;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
@@ -38,7 +39,7 @@ final class WatcherCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $loop = Factory::create();
-        $config = (new Builder())->build($input);
+        $config = $this->buildConfig($input);
         $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
 
         $this->addTerminationListeners($loop, $spinner);
@@ -64,5 +65,14 @@ final class WatcherCommand extends BaseCommand
 
         $loop->addSignal(SIGINT, $func);
         $loop->addSignal(SIGTERM, $func);
+    }
+
+    protected function buildConfig(InputInterface $input): Config
+    {
+        $builder = new Builder();
+        $fromFile = $builder->fromConfigFile((string)$input->getOption('config'));
+        $fromCommandLineArgs = $builder->fromCommandLineArgs($input);
+
+        return $fromFile->merge($fromCommandLineArgs);
     }
 }

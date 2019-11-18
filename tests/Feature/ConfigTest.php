@@ -4,7 +4,6 @@ namespace tests\Feature;
 
 use tests\Feature\Helper\WatcherTestCase;
 use tests\Feature\Helper\Filesystem;
-use tests\Helper\WatcherRunner;
 
 final class ConfigTest extends WatcherTestCase
 {

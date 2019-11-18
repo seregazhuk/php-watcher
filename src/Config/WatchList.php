@@ -67,6 +67,25 @@ final class WatchList
         return new self($values['paths'], $values['extensions'], $values['ignore']);
     }
 
+    public function merge(self $another): self
+    {
+        return new self(
+            $this->hasDefaultPath() && !empty($another->paths) ? $another->paths : $this->paths,
+            $this->hasDefaultExtensions() && !empty($another->extensions) ? $another->extensions : $this->extensions,
+            empty($this->ignore) && !empty($another->ignore) ? $another->ignore : $this->ignore
+        );
+    }
+
+    private function hasDefaultPath(): bool
+    {
+        return $this->paths === [getcwd()];
+    }
+
+    private function hasDefaultExtensions(): bool
+    {
+        return $this->extensions === self::DEFAULT_EXTENSIONS;
+    }
+
     public function toJson(): string
     {
         return json_encode([

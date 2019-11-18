@@ -13,25 +13,18 @@ final class Builder
         'php-watcher.yml.dist',
     ];
 
-    public function build(InputInterface $input): Config
+    public function fromConfigFile(string $path = null): Config
     {
-        $valuesFromFile = $this->getValuesFromConfigFile($input);
-        $commandLineValues = $this->valuesFromCommandLineArgs($input);
-        $configValues = $this->mergeConfigValues($valuesFromFile, $commandLineValues);
+        $pathToConfig = empty($path) ? $this->findConfigFile() : $path;
+        $values = empty($pathToConfig) ? [] : $this->valuesFromConfigFile($pathToConfig);
 
-        return new Config(
-            $configValues['script'],
-            $configValues['executable'],
-            $configValues['signal'],
-            $configValues['delay'],
-            $configValues['arguments'],
-            $configValues['no-spinner'],
-            new WatchList(
-                $configValues['watch'],
-                $configValues['extensions'],
-                $configValues['ignore']
-            )
-        );
+        return Config::fromArray($values);
+    }
+
+    public function fromCommandLineArgs(InputInterface $input): Config
+    {
+        $values = $this->valuesFromCommandLineArgs($input);
+        return Config::fromArray($values);
     }
 
     private function valuesFromConfigFile(string $configFilePath): array
@@ -49,7 +42,7 @@ final class Builder
         return $values;
     }
 
-    private function findConfigFile(): ?string
+    public function findConfigFile(): ?string
     {
         $configDirectory = getcwd();
         foreach (self::SUPPORTED_CONFIG_NAMES as $configName) {
@@ -76,37 +69,5 @@ final class Builder
             'arguments' => $input->getOption('arguments'),
             'no-spinner' => $input->getOption('no-spinner') !== false,
         ];
-    }
-
-    private function getConfigPath(InputInterface $input): ?string
-    {
-        $pathFromCommandLine = (string)$input->getOption('config');
-
-        return empty($pathFromCommandLine) ? $this->findConfigFile() : $pathFromCommandLine;
-    }
-
-    private function getValuesFromConfigFile(InputInterface $input): array
-    {
-        $configFilePath = $this->getConfigPath($input);
-        if ($configFilePath === null) {
-            $valuesFromFile = [];
-        } else {
-            $valuesFromFile = $this->valuesFromConfigFile($configFilePath);
-        }
-        return $valuesFromFile;
-    }
-
-    private function mergeConfigValues(array $valuesFromFile, array $commandLineValues): array
-    {
-        $configValues = [];
-        foreach ($commandLineValues as $key => $value) {
-            if (empty($value) && isset($valuesFromFile[$key])) {
-                $configValues[$key] = $valuesFromFile[$key];
-            } else {
-                $configValues[$key] = $commandLineValues[$key];
-            }
-        }
-
-        return $configValues;
     }
 }
