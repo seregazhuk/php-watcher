@@ -25,6 +25,20 @@ PHP-watcher does not require any additional changes to your code or method of
  development. `php-watcher` is a replacement wrapper for `php`, to use PHP
  -watcher replace the word `php` in the command line when executing your script.
 
+**Table of contents**
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Config files](#config-files)
+* [Monitoring multiple directories](#monitoring-multiple-directories)
+* [Specifying extension watch list](#specifying-extension-watch-list)
+* [Ignoring files](#ignoring-files)
+* [Delaying restarting](#delaying-restarting)
+* [Default executable](#default-executable)
+* [Gracefully reloading down your script](#gracefully-reloading-down-your-script)
+* [Automatic restart](#automatic-restart)
+* [Spinner](#spinner)
+
 ## Installation
 
 You can install this package globally like this:
