@@ -4,7 +4,6 @@ namespace seregazhuk\PhpWatcher\Config;
 
 final class Config
 {
-    private const DEFAULT_PHP_EXECUTABLE = 'php';
     private const DEFAULT_DELAY_IN_SECONDS = 0.25;
     private const DEFAULT_SIGNAL = SIGINT;
 
@@ -28,7 +27,7 @@ final class Config
     public function __construct(?string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
     {
         $this->script = $script;
-        $this->phpExecutable = $phpExecutable ?: self::DEFAULT_PHP_EXECUTABLE;
+        $this->phpExecutable = $phpExecutable ?: PHP_BINARY;
         $this->signal = $signal ?: self::DEFAULT_SIGNAL;
         $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
         $this->arguments = $arguments;
@@ -88,7 +87,7 @@ final class Config
     {
         return new self(
             empty($this->script) && $another->script ? $another->script : $this->script,
-            $this->phpExecutable === self::DEFAULT_PHP_EXECUTABLE && $another->phpExecutable ? $another->phpExecutable: $this->phpExecutable,
+            $this->phpExecutable === PHP_BINARY && $another->phpExecutable ? $another->phpExecutable: $this->phpExecutable,
             $this->signal === self::DEFAULT_SIGNAL && $another->signal ? $another->signal : $this->signal,
             $this->delay === self::DEFAULT_DELAY_IN_SECONDS && $another->delay ? $another->delay: $this->delay,
             empty($this->arguments) && !empty($another->arguments) ? $another->arguments : $this->arguments,
