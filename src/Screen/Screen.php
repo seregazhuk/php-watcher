@@ -62,7 +62,7 @@ final class Screen
 
     public function start(string $command): void
     {
-        $command = str_replace('exec', '', $command);
+        $command = str_replace(['exec', PHP_BINARY], ['', 'php'], $command);
         $this->info(sprintf('starting `%s`', trim($command)));
     }
 
