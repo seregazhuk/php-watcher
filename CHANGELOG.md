@@ -1,3 +1,7 @@
+## 0.5.2 (2019-12-07)
+* Fix: use predefined const for PHP binary [#59](https://github.com/seregazhuk/php-watcher/pull/59)
+* Fix: increase dependency options [#58](https://github.com/seregazhuk/php-watcher/pull/58) by @mmoreram 
+
 ## 0.5.1 (2019-11-03)
 * Fix: ability to disable the spinner [#48](https://github.com/seregazhuk/php-watcher/pull/48)
 
