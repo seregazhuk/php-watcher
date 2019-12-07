@@ -25,13 +25,15 @@
     ],
     "require": {
         "php": "^7.2",
-        "yosymfony/resource-watcher": "^2.0",
-        "symfony/console": "^4.3",
-        "react/event-loop": "^1.1",
-        "symfony/yaml": "^4.3",
-        "react/child-process": "^0.6.1",
         "ext-json": "*",
         "ext-pcntl": "*",
+        "yosymfony/resource-watcher": "^2.0",
+        "symfony/console": "^4.3 || ^5.0",
+        "react/event-loop": "^1.1",
+        "symfony/yaml": "^4.3 || ^5.0",
+        "react/child-process": "^0.6.1",
+        "react/stream": "^1.0.0",
+        "symfony/finder": "^4.3 || ^5.0",
         "alecrabbit/php-cli-snake": "^0.5"
     },
     "autoload": {
