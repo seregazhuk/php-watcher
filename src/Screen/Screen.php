@@ -3,7 +3,6 @@
 namespace seregazhuk\PhpWatcher\Screen;
 
 use AlecRabbit\Snake\Contracts\SpinnerInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\ConsoleApplication;
@@ -77,22 +76,18 @@ final class Screen
         }
     }
 
-    public function subscribeToProcessOutput(Process $process): void
+    public function processExit(int $exitCode): void
     {
-        $process->stdout->on('data', static function ($data) {
-            echo $data;
-        });
-        $process->stderr->on('data', static function ($data) {
-            echo $data;
-        });
+        if ($exitCode === 0) {
+            $this->info('clean exit - waiting for changes before restart');
+        } else {
+            $this->warning('app crashed - waiting for file changes before starting...');
+        }
+    }
 
-        $process->on('exit', function($exitCode) {
-            if ($exitCode === 0) {
-                $this->info('clean exit - waiting for changes before restart');
-            } else {
-                $this->warning('app crashed - waiting for file changes before starting...');
-            }
-        });
+    public function plainOutput(string $data): void
+    {
+        $this->output->write($data);
     }
 
     public function showSpinner(LoopInterface $loop): void

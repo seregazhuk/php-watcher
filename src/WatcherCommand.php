@@ -3,11 +3,11 @@
 namespace seregazhuk\PhpWatcher;
 
 use AlecRabbit\Snake\Contracts\SpinnerInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Config\Config;
+use seregazhuk\PhpWatcher\Config\InputExtractor;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
@@ -39,18 +39,21 @@ final class WatcherCommand extends BaseCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $loop = Factory::create();
-        $config = $this->buildConfig($input);
+        $config = $this->buildConfig(new InputExtractor($input));
         $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
 
         $this->addTerminationListeners($loop, $spinner);
 
         $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
         $filesystem = new ChangesListener($loop, $config->watchList());
-        $watcher = new Watcher($loop, $screen, $filesystem);
 
         $screen->showOptions($config->watchList());
-        $process = new Process($config->command());
-        $watcher->startWatching($process, $config->signal(), $config->delay());
+        $processRunner = new ProcessRunner($loop, $screen, $config->command());
+
+        $watcher = new Watcher($loop, $filesystem);
+        $watcher->startWatching($processRunner, $config->signalToReload(), $config->delay());
+
+        return 0;
     }
 
     /**
@@ -67,10 +70,10 @@ final class WatcherCommand extends BaseCommand
         $loop->addSignal(SIGTERM, $func);
     }
 
-    protected function buildConfig(InputInterface $input): Config
+    private function buildConfig(InputExtractor $input): Config
     {
         $builder = new Builder();
-        $fromFile = $builder->fromConfigFile((string)$input->getOption('config'));
+        $fromFile = $builder->fromConfigFile($input->getStringOption('config'));
         $fromCommandLineArgs = $builder->fromCommandLineArgs($input);
 
         return $fromFile->merge($fromCommandLineArgs);

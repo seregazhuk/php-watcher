@@ -5,13 +5,13 @@ namespace seregazhuk\PhpWatcher\Config;
 final class Config
 {
     private const DEFAULT_DELAY_IN_SECONDS = 0.25;
-    private const DEFAULT_SIGNAL = SIGINT;
+    private const DEFAULT_SIGNAL_TO_RELOAD = SIGINT;
 
     private $script;
 
     private $phpExecutable;
 
-    private $signal;
+    private $signalToReload;
 
     private $delay;
 
@@ -24,11 +24,11 @@ final class Config
 
     private $watchList;
 
-    public function __construct(?string $script, ?string $phpExecutable, ?int $signal, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
+    public function __construct(?string $script, ?string $phpExecutable, ?int $signalToReload, ?float $delay, array $arguments, bool $spinnerDisabled, WatchList $watchList)
     {
         $this->script = $script;
         $this->phpExecutable = $phpExecutable ?: PHP_BINARY;
-        $this->signal = $signal ?: self::DEFAULT_SIGNAL;
+        $this->signalToReload = $signalToReload ?: self::DEFAULT_SIGNAL_TO_RELOAD;
         $this->delay = $delay ?: self::DEFAULT_DELAY_IN_SECONDS;
         $this->arguments = $arguments;
         $this->spinnerDisabled = $spinnerDisabled;
@@ -40,7 +40,7 @@ final class Config
         return new self(
             $values['script'] ?? null,
             $values['executable'] ?? null,
-            $values['signal'] ?? null,
+            isset($values['signal']) ? constant($values['signal']) : null,
             $values['delay'] ?? null,
             $values['arguments'] ?? [],
             $values['no-spinner'] ?? false,
@@ -73,9 +73,9 @@ final class Config
         return $this->delay;
     }
 
-    public function signal(): int
+    public function signalToReload(): int
     {
-        return $this->signal;
+        return $this->signalToReload;
     }
 
     public function spinnerDisabled(): bool
@@ -88,7 +88,7 @@ final class Config
         return new self(
             empty($this->script) && $another->script ? $another->script : $this->script,
             $this->phpExecutable === PHP_BINARY && $another->phpExecutable ? $another->phpExecutable: $this->phpExecutable,
-            $this->signal === self::DEFAULT_SIGNAL && $another->signal ? $another->signal : $this->signal,
+            $this->signalToReload === self::DEFAULT_SIGNAL_TO_RELOAD && $another->signalToReload ? $another->signalToReload : $this->signalToReload,
             $this->delay === self::DEFAULT_DELAY_IN_SECONDS && $another->delay ? $another->delay: $this->delay,
             empty($this->arguments) && !empty($another->arguments) ? $another->arguments : $this->arguments,
             $another->spinnerDisabled ?: $this->spinnerDisabled,
