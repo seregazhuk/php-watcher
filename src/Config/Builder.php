@@ -2,7 +2,6 @@
 
 namespace seregazhuk\PhpWatcher\Config;
 
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Yaml\Yaml;
 
 final class Builder
@@ -21,7 +20,7 @@ final class Builder
         return Config::fromArray($values);
     }
 
-    public function fromCommandLineArgs(InputInterface $input): Config
+    public function fromCommandLineArgs(InputExtractor $input): Config
     {
         $values = $this->valuesFromCommandLineArgs($input);
         return Config::fromArray($values);
@@ -56,18 +55,18 @@ final class Builder
         return null;
     }
 
-    private function valuesFromCommandLineArgs(InputInterface $input): array
+    private function valuesFromCommandLineArgs(InputExtractor $input): array
     {
         return [
-            'script' => $input->getArgument('script'),
-            'executable' => $input->getOption('exec'),
-            'watch' => $input->getOption('watch'),
-            'extensions' => empty($input->getOption('ext')) ? [] : explode(',', $input->getOption('ext')),
-            'ignore' => $input->getOption('ignore'),
-            'signal' => $input->getOption('signal') ? constant($input->getOption('signal')) : null,
-            'delay' => (float)$input->getOption('delay'),
-            'arguments' => $input->getOption('arguments'),
-            'no-spinner' => $input->getOption('no-spinner'),
+            'script' => $input->getStringArgument('script'),
+            'executable' => $input->getStringOption('exec'),
+            'watch' => $input->getArrayOption('watch'),
+            'extensions' => $input->getArrayOption('ext'),
+            'ignore' => $input->getArrayOption('ignore'),
+            'signal' => $input->getStringOption('signal'),
+            'delay' => $input->getFloatOption('delay'),
+            'arguments' => $input->getArrayOption('arguments'),
+            'no-spinner' => $input->getBooleanOption('no-spinner'),
         ];
     }
 }
