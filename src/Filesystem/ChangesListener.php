@@ -36,7 +36,7 @@ final class ChangesListener extends EventEmitter
             throw new RuntimeException('Cannot open STDOUT for filesystem watcher');
         }
 
-        $process->stdout->on('data', function ($data) {
+        $process->stdout->on('data', function (string $data) {
             if ((bool)$data) {
                 $this->emit('change');
             }

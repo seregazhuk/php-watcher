@@ -61,7 +61,7 @@ final class WatcherCommand extends BaseCommand
      */
     private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner): void
     {
-        $func = static function (int $signal) use ($spinner) {
+        $func = static function (int $signal) use ($spinner): void {
             $spinner->end();
             exit($signal);
         };

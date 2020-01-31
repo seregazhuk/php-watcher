@@ -5,20 +5,23 @@ jobs:
     - stage: "PHP7.2 - lowest"
       php: 7.2
       script:
-        - composer update -n --prefer-dist  --prefer-lowest --no-suggest
+        - composer update -n --prefer-dist --prefer-lowest --no-suggest
         - composer dump-autoload
-        - php vendor/bin/phpunit
+        - composer ci:tests
+        - composer ci:php:psalm
 
     - stage: "PHP7.3 - highest"
       php: 7.3
       script:
         - composer update -n --prefer-dist --no-suggest
         - composer dump-autoload
-        - php vendor/bin/phpunit
+        - composer ci:tests
+        - composer ci:php:psalm
 
     - stage: "PHP7.4 - highest"
       php: 7.4
       script:
         - composer update -n --prefer-dist --no-suggest
         - composer dump-autoload
-        - php vendor/bin/phpunit
+        - composer ci:tests
+        - composer ci:php:psalm
