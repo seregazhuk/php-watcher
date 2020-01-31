@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace tests\Feature\Helper;
+namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
 
 use Symfony\Component\Yaml\Yaml;
 
@@ -8,17 +8,14 @@ final class Filesystem
 {
     private const FIXTURES_DIR = 'tests/fixtures/';
 
-    private static $files = [];
-
     public static function createFile(string $name, string $contents): void
     {
-        self::$files[] = $name;
         file_put_contents($name, $contents);
     }
 
     public static function createHelloWorldPHPFile(): string
     {
-        $name = self::FIXTURES_DIR . 'test.php';
+        $name = self::buildFilePath('test.php');
         self::createFile($name, '<?php echo "Hello, world";');
 
         return $name;
@@ -26,7 +23,7 @@ final class Filesystem
 
     public static function createPHPFileThatCrashes(): string
     {
-        $name = self::FIXTURES_DIR . 'test.php';
+        $name = self::buildFilePath('test.php');
         self::createFile($name, '<?php exit(1);');
 
         return $name;
@@ -34,7 +31,7 @@ final class Filesystem
 
     public static function createStdErrorPHPFile(): string
     {
-        $name = self::FIXTURES_DIR . 'test.php';
+        $name = self::buildFilePath('test.php');
         self::createFile($name, '<?php fwrite(STDERR, "Some error");');
 
         return $name;
@@ -42,7 +39,7 @@ final class Filesystem
 
     public static function createHelloWorldPHPFileWithSignalsHandling(): string
     {
-        $name = self::FIXTURES_DIR . 'test_signals.php';
+        $name = self::buildFilePath('test_signals.php');
         $code = <<<CODE
 <?php declare(ticks = 1);
 
@@ -65,7 +62,7 @@ CODE;
 
     public static function createConfigFile(array $options): string
     {
-        $name = self::FIXTURES_DIR . '.php-watcher.yml';
+        $name = self::buildFilePath('.php-watcher.yml');
         self::createFile($name, Yaml::dump($options));
 
         return $name;
@@ -81,12 +78,18 @@ CODE;
         return str_replace('tests/', '', self::FIXTURES_DIR);
     }
 
+    private static function buildFilePath(string $filename): string
+    {
+        return self::FIXTURES_DIR . $filename;
+    }
+
     public static function clear(): void
     {
-        foreach (self::$files as $file) {
-            @unlink($file);
+        $files = glob(self::FIXTURES_DIR . '/*');
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                @unlink($file);
+            }
         }
-
-        self::$files = [];
     }
 }

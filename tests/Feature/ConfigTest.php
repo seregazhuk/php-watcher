@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace tests\Feature;
+namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use tests\Feature\Helper\WatcherTestCase;
-use tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 
 final class ConfigTest extends WatcherTestCase
 {

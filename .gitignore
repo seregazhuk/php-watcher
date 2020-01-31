@@ -1,4 +1,6 @@
+!.gitignore
 clover.xml
 .phpunit.result.cache
 vendor/
 composer.lock
+tests/fixtures/*.*
