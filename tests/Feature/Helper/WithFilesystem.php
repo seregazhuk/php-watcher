@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace tests\Feature\Helper;
+namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
+
+use Throwable;
 
 trait WithFilesystem
 {
@@ -9,4 +11,11 @@ trait WithFilesystem
         Filesystem::clear();
         parent::tearDown();
     }
+
+    protected function onNotSuccessfulTest(Throwable $error): void
+    {
+        Filesystem::clear();
+        parent::onNotSuccessfulTest($error);
+    }
+
 }

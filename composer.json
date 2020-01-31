@@ -43,7 +43,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "tests\\": "tests"
+            "seregazhuk\\PhpWatcher\\Tests\\": "tests"
         }
     },
     "bin": [

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace tests\Feature\Helper;
+namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Process\Process;
@@ -9,6 +9,8 @@ abstract class WatcherTestCase extends TestCase
 {
     use WithFilesystem;
 
+    private const WAIT_TIMEOUT_MS = 2500000;
+
     /**
      * @var Process
      */
@@ -16,10 +18,11 @@ abstract class WatcherTestCase extends TestCase
 
     protected function wait(): void
     {
-        usleep(2500000);
+        usleep(self::WAIT_TIMEOUT_MS);
     }
 
-    protected function watch(string $scriptToRun, array $options = []): void {
+    protected function watch(string $scriptToRun, array $options = []): void
+    {
         $this->watcherRunner = (new WatcherRunner())->run($scriptToRun, $options);
     }
 

@@ -1,8 +1,7 @@
 <?php declare(strict_types=1);
 
 
-namespace tests\Unit;
-
+namespace seregazhuk\PhpWatcher\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
