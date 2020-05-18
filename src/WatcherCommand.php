@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
 
@@ -25,13 +26,30 @@ final class WatcherCommand extends BaseCommand
         $this->setName('watch')
             ->setDescription('Restart PHP application once the source code changes.')
             ->addArgument('script', InputArgument::REQUIRED, 'Script to run')
-            ->addOption('watch', '-w', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to watch')
+            ->addOption(
+                'watch',
+                '-w',
+                InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL,
+                'Paths to watch'
+            )
             ->addOption('ext', '-e', InputOption::VALUE_OPTIONAL, 'Extensions to watch', '')
-            ->addOption('ignore', '-i', InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Paths to ignore', [])
+            ->addOption(
+                'ignore',
+                '-i',
+                InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL,
+                'Paths to ignore',
+                []
+            )
             ->addOption('exec', null, InputOption::VALUE_OPTIONAL, 'PHP executable')
             ->addOption('delay', null, InputOption::VALUE_OPTIONAL, 'Delaying restart')
             ->addOption('signal', null, InputOption::VALUE_OPTIONAL, 'Signal to reload the app')
-            ->addOption('arguments', null, InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL, 'Arguments for the script', [])
+            ->addOption(
+                'arguments',
+                null,
+                InputOption::VALUE_IS_ARRAY + InputOption::VALUE_OPTIONAL,
+                'Arguments for the script',
+                []
+            )
             ->addOption('config', null, InputOption::VALUE_OPTIONAL, 'Path to config file')
             ->addOption('no-spinner', null, InputOption::VALUE_NONE, 'Remove spinner from output');
     }
@@ -45,13 +63,18 @@ final class WatcherCommand extends BaseCommand
         $this->addTerminationListeners($loop, $spinner);
 
         $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
-        $filesystem = new ChangesListener($loop, $config->watchList());
+        $filesystem = new ChangesListener($loop);
 
         $screen->showOptions($config->watchList());
         $processRunner = new ProcessRunner($loop, $screen, $config->command());
 
         $watcher = new Watcher($loop, $filesystem);
-        $watcher->startWatching($processRunner, $config->signalToReload(), $config->delay());
+        $watcher->startWatching(
+            $processRunner,
+            $config->watchList(),
+            $config->signalToReload(),
+            $config->delay()
+        );
 
         return 0;
     }

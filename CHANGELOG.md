@@ -1,3 +1,6 @@
+## 0.6.0 (2020-05-11)
+* Fix: don't use child process for resource watching
+
 ## 0.5.2 (2019-12-07)
 * Fix: use predefined const for PHP binary [#59](https://github.com/seregazhuk/php-watcher/pull/59)
 * Fix: increase dependency options [#58](https://github.com/seregazhuk/php-watcher/pull/58) by @mmoreram 

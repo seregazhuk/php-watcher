@@ -9,7 +9,7 @@ abstract class WatcherTestCase extends TestCase
 {
     use WithFilesystem;
 
-    private const WAIT_TIMEOUT_MS = 2500000;
+    private const WAIT_TIMEOUT_MS = 5000000;
 
     /**
      * @var Process
