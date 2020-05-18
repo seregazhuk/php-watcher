@@ -28,6 +28,7 @@ final class WatchDirectoriesTest extends WatcherTestCase
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
         $this->wait();
+
         $this->assertOutputContains('restarting due to changes...');
     }
 }

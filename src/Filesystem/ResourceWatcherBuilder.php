@@ -8,7 +8,7 @@ use Yosymfony\ResourceWatcher\Crc32ContentHash;
 use Yosymfony\ResourceWatcher\ResourceCacheMemory;
 use Yosymfony\ResourceWatcher\ResourceWatcher;
 
-final class ResourceWatcherFactory
+final class ResourceWatcherBuilder
 {
     public static function create(WatchList $watchList): ResourceWatcher
     {
