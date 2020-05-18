@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Filesystem;
+namespace seregazhuk\PhpWatcher\Filesystem\ResourceWatcherBased;
 
 use seregazhuk\PhpWatcher\Config\WatchList;
+use seregazhuk\PhpWatcher\Filesystem\WatchPath;
 use Symfony\Component\Finder\Finder;
 use Yosymfony\ResourceWatcher\Crc32ContentHash;
 use Yosymfony\ResourceWatcher\ResourceCacheMemory;

@@ -9,7 +9,7 @@ use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Config\Config;
 use seregazhuk\PhpWatcher\Config\InputExtractor;
-use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\ResourceWatcherBased\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
 use Symfony\Component\Console\Command\Command as BaseCommand;
