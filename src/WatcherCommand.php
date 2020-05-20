@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
@@ -9,7 +10,8 @@ use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Config\Config;
 use seregazhuk\PhpWatcher\Config\InputExtractor;
-use seregazhuk\PhpWatcher\Filesystem\ResourceWatcherBased\ChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\Factory as ChangesListenerFactory;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
 use Symfony\Component\Console\Command\Command as BaseCommand;
@@ -60,18 +62,16 @@ final class WatcherCommand extends BaseCommand
         $config = $this->buildConfig(new InputExtractor($input));
         $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
 
-        $this->addTerminationListeners($loop, $spinner);
-
         $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
-        $filesystem = new ChangesListener($loop);
+        $filesystem = ChangesListenerFactory::create($config->watchList(), $loop);
 
         $screen->showOptions($config->watchList());
         $processRunner = new ProcessRunner($loop, $screen, $config->command());
+        $this->addTerminationListeners($loop, $spinner, $filesystem, $processRunner);
 
         $watcher = new Watcher($loop, $filesystem);
         $watcher->startWatching(
             $processRunner,
-            $config->watchList(),
             $config->signalToReload(),
             $config->delay()
         );
@@ -82,10 +82,14 @@ final class WatcherCommand extends BaseCommand
     /**
      * When terminating the watcher we need to manually restore the cursor after the spinner.
      */
-    private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner): void
-    {
-        $func = static function (int $signal) use ($spinner): void {
+    private function addTerminationListeners(
+        LoopInterface $loop,
+        SpinnerInterface $spinner,
+        ChangesListener $changesListener
+    ): void {
+        $func = static function (int $signal) use ($spinner, $changesListener): void {
             $spinner->end();
+            $changesListener->stop();
             exit($signal);
         };
 

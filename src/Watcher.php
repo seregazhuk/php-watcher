@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace seregazhuk\PhpWatcher;
 
 use React\EventLoop\LoopInterface;
-use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Filesystem\ResourceWatcherBased\ChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 final class Watcher
 {
-    private $loop;
+    private LoopInterface $loop;
 
-    private $filesystemListener;
+    private ChangesListener $filesystemListener;
 
     public function __construct(LoopInterface $loop, ChangesListener $filesystemListener)
     {
@@ -22,13 +21,12 @@ final class Watcher
 
     public function startWatching(
         ProcessRunner $processRunner,
-        WatchList $watchList,
         int $signal,
         float $delayToRestart
     ): void {
         $processRunner->start();
 
-        $this->filesystemListener->start($watchList);
+        $this->filesystemListener->start();
         $this->filesystemListener->onChange(
             static function () use ($processRunner, $signal, $delayToRestart) {
                 $processRunner->stop($signal);

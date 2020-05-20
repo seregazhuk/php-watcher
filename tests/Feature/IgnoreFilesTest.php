@@ -7,7 +7,6 @@ use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 
 final class IgnoreFilesTest extends WatcherTestCase
 {
-    /** @test */
     public function it_doesnt_reload_when_ignored_files_change(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();

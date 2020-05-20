@@ -19,8 +19,8 @@ final class ChangesListenerTest extends TestCase
     public function it_emits_change_event_on_changes(): void
     {
         $loop = Factory::create();
-        $listener = new ChangesListener($loop);
-        $listener->start(new WatchList([Filesystem::fixturesDir()]));
+        $listener = new ChangesListener(new WatchList([Filesystem::fixturesDir()]), $loop);
+        $listener->start();
 
         $loop->addTimer(1, [Filesystem::class, 'createHelloWorldPHPFile']);
         $eventWasEmitted = false;

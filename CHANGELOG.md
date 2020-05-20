@@ -1,5 +1,7 @@
-## 0.6.0 (2020-05-11)
+## 0.6.0 (2020-05-20)
 * Fix: don't use child process for resource watching
+* Feature: add fswatch support
+* Fix: min required PHP version is set to 7.4
 
 ## 0.5.2 (2019-12-07)
 * Fix: use predefined const for PHP binary [#59](https://github.com/seregazhuk/php-watcher/pull/59)

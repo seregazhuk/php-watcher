@@ -37,6 +37,7 @@ PHP-watcher does not require any additional changes to your code or method of
 * [Default executable](#default-executable)
 * [Gracefully reloading down your script](#gracefully-reloading-down-your-script)
 * [Automatic restart](#automatic-restart)
+* [Performance](#performance)
 * [Spinner](#spinner)
 
 ## Installation
@@ -234,6 +235,14 @@ to monitor the directory (or directories) and restart the script if there are an
 script crashes PHP-watcher will notify you about that.
 
 ![app exit](images/exit.svg)
+
+## Performance
+
+The watcher can use different strategies to monitor your file system changes. Under the hood it 
+detects the environment and chooses the best suitable strategy.
+
+By default, it uses [yosymfony/resource-watcher](https://github.com/yosymfony/resource-watcher
+) which 
 
 ## Spinner
 
