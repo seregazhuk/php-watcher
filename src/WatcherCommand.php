@@ -67,7 +67,7 @@ final class WatcherCommand extends BaseCommand
 
         $screen->showOptions($config->watchList());
         $processRunner = new ProcessRunner($loop, $screen, $config->command());
-        $this->addTerminationListeners($loop, $spinner, $filesystem, $processRunner);
+        $this->addTerminationListeners($loop, $spinner, $filesystem);
 
         $watcher = new Watcher($loop, $filesystem);
         $watcher->startWatching(
