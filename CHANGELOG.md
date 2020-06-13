@@ -1,4 +1,4 @@
-## 0.6.0 (2020-05-20)
+## 0.6.0 (2020-06-14)
 * Fix: don't use child process for resource watching
 * Feature: add fswatch support
 * Fix: min required PHP version is set to 7.4
