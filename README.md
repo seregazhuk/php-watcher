@@ -241,12 +241,23 @@ script crashes PHP-watcher will notify you about that.
 The watcher can use different strategies to monitor your file system changes. Under the hood it 
 detects the environment and chooses the best suitable strategy.
 
+### Resource-Watcher
+
 By default, it uses [yosymfony/resource-watcher](https://github.com/yosymfony/resource-watcher
-) which 
+) which is the slowest, and most resource intensive option, but it should work on all environments. 
+Under the hood it is constantly asking the filesystem whether there are new changes or not. 
+
+### Fswatch
+
+[FsWatch](https://github.com/emcrisostomo/fswatch) is a cross-platform (Linux,Mac,Windows) file change monitor which will automatically
+ use the platforms native functionality when possible. Under the hood the filesystem notifies us
+  when any changes occur. If your system has fswatch installed this strategy will be used. 
+
+**Has not been extensively tested.**
 
 ## Spinner
 
-By default the watcher outputs a nice spinner which indicates that the process is running
+By default, the watcher outputs a nice spinner which indicates that the process is running
 and watching your files. But if your system doesn't support ansi coded the watcher
 will try to detect it and disable the spinner. Or you can always disable the spinner
 manually with option '--no-spinner':
