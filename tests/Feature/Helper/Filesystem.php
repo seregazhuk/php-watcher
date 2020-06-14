@@ -75,7 +75,7 @@ CODE;
 
     public static function fixturesDir(): string
     {
-        return str_replace('tests/', '', self::FIXTURES_DIR);
+        return realpath(__DIR__ . '/../../../' .  self::FIXTURES_DIR);
     }
 
     private static function buildFilePath(string $filename): string
