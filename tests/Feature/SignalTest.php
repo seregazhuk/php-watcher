@@ -10,9 +10,9 @@ final class SignalTest extends WatcherTestCase
     /** @test */
     public function it_sends_a_specified_signal_to_restart_the_app(): void
     {
-        if (!defined('SIGTERM')) {
+        //if (!defined('SIGTERM')) {
             $this->markTestSkipped('SIGTERM is not defined');
-        }
+        //}
 
         $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
         $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', Filesystem::fixturesDir()]);

@@ -11,10 +11,7 @@ abstract class WatcherTestCase extends TestCase
 
     private const WAIT_TIMEOUT_MS = 5000000;
 
-    /**
-     * @var Process
-     */
-    private $watcherRunner;
+    private Process $watcherRunner;
 
     protected function wait(): void
     {

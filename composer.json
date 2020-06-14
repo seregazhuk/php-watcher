@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
         "ext-pcntl": "*",
         "yosymfony/resource-watcher": "^2.0",
@@ -34,7 +34,8 @@
         "react/child-process": "^0.6.1",
         "react/stream": "^1.0.0",
         "symfony/finder": "^4.3 || ^5.0",
-        "alecrabbit/php-cli-snake": "^0.5"
+        "alecrabbit/php-cli-snake": "^0.5",
+        "seregazhuk/reactphp-fswatch": "^0.1.0"
     },
     "autoload": {
         "psr-4": {
