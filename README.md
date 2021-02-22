@@ -2,7 +2,6 @@
 
 [![PHP Version](https://img.shields.io/packagist/php-v/seregazhuk/php-watcher.svg)](https://php.net/)
 [![Build Status](https://travis-ci.org/seregazhuk/php-watcher.svg?branch=master)](https://travis-ci.org/seregazhuk/php-watcher)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/seregazhuk/php-watcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/seregazhuk/php-watcher/?branch=master)
 [![Total Downloads](https://poser.pugx.org/seregazhuk/php-watcher/downloads)](https://packagist.org/packages/seregazhuk/php-watcher)
 
 [![Latest Stable Version](https://poser.pugx.org/seregazhuk/php-watcher/v/stable)](https://packagist.org/packages/seregazhuk/php-watcher)
