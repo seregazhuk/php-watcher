@@ -35,14 +35,17 @@ jobs:
       - name: Check Out Code
         uses: actions/checkout@v4
 
+      - name: Install fswatch
+        run: sudo apt-get install fswatch
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, sockets, grpc, curl ${{ matrix.extensions-suffix }}
-
-      - name: Install fswatch
-        run: sudo apt-get install fswatch
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
