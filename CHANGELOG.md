@@ -1,3 +1,7 @@
+## 0.7.0 (2025-10-23)
+* Feature: add support for PHP 8.1
+* Feature: rebuild the entire engine, now it works on top of Nodejs chokidar package.
+
 ## 0.6.0 (2020-05-11)
 * Fix: don't use child process for resource watching
 
