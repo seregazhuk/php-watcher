@@ -12,10 +12,7 @@ use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
-use Seregazhuk\ReactFsWatch\Change;
-
 use function React\Async\async;
-use function React\Async\await;
 use function React\Async\delay;
 
 final class FsWatchChangesListenerTest extends TestCase
@@ -25,14 +22,14 @@ final class FsWatchChangesListenerTest extends TestCase
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
-        if (!FSWatchChangesListener::isAvailable()) {
+        if (! FSWatchChangesListener::isAvailable()) {
             $this->markTestSkipped('fswatch is not available');
         }
 
         $loop = Loop::get();
         $loop->addTimer(1, async(Filesystem::createHelloWorldPHPFile(...)));
 
-        $listener = new FSWatchChangesListener();
+        $listener = new FSWatchChangesListener;
         $listener->start(new WatchList([Filesystem::fixturesDir()]));
 
         $listener->onChange(function (): void {

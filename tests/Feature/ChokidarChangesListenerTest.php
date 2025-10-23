@@ -12,7 +12,6 @@ use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChokidarChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
-use function React\Async\async;
 use function React\Async\delay;
 
 final class ChokidarChangesListenerTest extends TestCase

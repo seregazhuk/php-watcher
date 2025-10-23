@@ -16,6 +16,7 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
     private const INTERVAL = 0.15;
 
     private ?Process $process = null;
+
     private ?TimerInterface $timer = null;
 
     public function __construct(private readonly LoopInterface $loop) {}
@@ -55,7 +56,7 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
             $this->process->stop();
         }
 
-        if ($this->timer !== null) {
+        if ($this->timer instanceof \React\EventLoop\TimerInterface) {
             $this->loop->cancelTimer($this->timer);
         }
     }
