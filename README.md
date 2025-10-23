@@ -55,6 +55,9 @@ composer require seregazhuk/php-watcher --dev
 ```
 Locally installed you can run it with `vendor/bin/php-watcher`.
 
+Under the hood, to watch filesystem changes, PHP-watcher uses JavaScript package [chokidar](https://github.com/paulmillr/chokidar).
+At first run it will check and install it if required.
+
 ## Usage
 
 All the examples assume you've installed the package globally. If you opted for the local installation prepend `vendor/bin/` everywhere where `php-watcher` is mentioned.
