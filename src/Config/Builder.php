@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Config;
 
@@ -12,10 +14,10 @@ final class Builder
         'php-watcher.yml.dist',
     ];
 
-    public function fromConfigFile(string $path = null): Config
+    public function fromConfigFile(?string $path = null): Config
     {
-        $pathToConfig = empty($path) ? $this->findConfigFile() : $path;
-        $values = empty($pathToConfig) ? [] : $this->valuesFromConfigFile($pathToConfig);
+        $pathToConfig = $path === null || $path === '' || $path === '0' ? $this->findConfigFile() : $path;
+        $values = $pathToConfig === null || $pathToConfig === '' || $pathToConfig === '0' ? [] : $this->valuesFromConfigFile($pathToConfig);
 
         return Config::fromArray($values);
     }
@@ -23,9 +25,23 @@ final class Builder
     public function fromCommandLineArgs(InputExtractor $input): Config
     {
         $values = $this->valuesFromCommandLineArgs($input);
+
         return Config::fromArray($values);
     }
 
+    /**
+     * @return array{
+     *      script: string|null,
+     *      executable: string|null,
+     *      signal: int|null,
+     *      delay: float|null,
+     *      arguments: string[],
+     *      no-spinner: bool,
+     *      watch: string[],
+     *      extensions: string[],
+     *      ignore: string[]
+     *  }
+     */
     private function valuesFromConfigFile(string $configFilePath): array
     {
         $contents = file_get_contents($configFilePath);
@@ -34,7 +50,7 @@ final class Builder
         }
 
         $values = Yaml::parse($contents);
-        if ($values === null) {
+        if (! is_array($values)) {
             throw InvalidConfigFileContents::invalidContents($configFilePath);
         }
 
@@ -55,6 +71,19 @@ final class Builder
         return null;
     }
 
+    /**
+     * @return array{
+     *      script: string|null,
+     *      executable: string|null,
+     *      watch: string[],
+     *      extensions: string[],
+     *      ignore: string[],
+     *      signal: int|null,
+     *      delay: float|null,
+     *      arguments: string[],
+     *      no-spinner: bool,
+     *  }
+     */
     private function valuesFromCommandLineArgs(InputExtractor $input): array
     {
         return [

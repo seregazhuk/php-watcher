@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
 
@@ -12,10 +14,9 @@ trait WithFilesystem
         parent::tearDown();
     }
 
-    protected function onNotSuccessfulTest(Throwable $error): void
+    protected function onNotSuccessfulTest(Throwable $error): never
     {
         Filesystem::clear();
         parent::onNotSuccessfulTest($error);
     }
-
 }

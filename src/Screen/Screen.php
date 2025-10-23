@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Screen;
 
@@ -10,15 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
 {
-    private $output;
-
-    private $spinner;
-
-    public function __construct(SymfonyStyle $output, SpinnerInterface $spinner)
-    {
-        $this->output = $output;
-        $this->spinner = $spinner;
-    }
+    public function __construct(private readonly SymfonyStyle $output, private readonly SpinnerInterface $spinner) {}
 
     public function showOptions(WatchList $watchList): void
     {
@@ -28,11 +22,11 @@ final class Screen
 
     private function showWatchList(WatchList $watchList): void
     {
-        $watching = $watchList->isWatchingForEverything() ? '*.*' : implode(', ', $watchList->paths());
-        $this->comment('watching: ' . $watching);
+        $watching = $watchList->isWatchingForEverything() ? '*.*' : implode(', ', $watchList->getPaths());
+        $this->comment('watching: '.$watching);
 
         if ($watchList->hasIgnoring()) {
-            $this->comment('ignoring: ' . implode(', ', $watchList->ignore()));
+            $this->comment('ignoring: '.implode(', ', $watchList->getIgnored()));
         }
     }
 
@@ -41,7 +35,7 @@ final class Screen
         $this->comment(ConsoleApplication::VERSION);
     }
 
-    private function comment(string $text): void
+    public function comment(string $text): void
     {
         $text = sprintf('<comment>%s</comment>', $this->message($text));
         $this->output->writeln($text);
@@ -53,7 +47,7 @@ final class Screen
         $this->output->writeln($text);
     }
 
-    private function warning(string $text): void
+    public function warning(string $text): void
     {
         $text = sprintf('<fg=red>%s</>', $this->message($text));
         $this->output->writeln($text);
@@ -65,15 +59,11 @@ final class Screen
         $this->info(sprintf('starting `%s`', trim($command)));
     }
 
-    public function restarting(string $command = null): void
+    public function restarting(?string $command = null): void
     {
         $this->spinner->erase();
         $this->output->writeln('');
         $this->info('restarting due to changes...');
-
-        if ($command !== null) {
-            $this->start($command);
-        }
     }
 
     public function processExit(int $exitCode): void
@@ -93,7 +83,7 @@ final class Screen
     public function showSpinner(LoopInterface $loop): void
     {
         $this->spinner->begin();
-        $loop->addPeriodicTimer($this->spinner->interval(), function () {
+        $loop->addPeriodicTimer($this->spinner->interval(), function (): void {
             $this->spinner->spin();
         });
     }

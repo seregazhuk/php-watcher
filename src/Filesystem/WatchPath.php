@@ -1,19 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Filesystem;
 
 final class WatchPath
 {
-    private $pattern;
-
-    public function __construct(string $pattern)
-    {
-        $this->pattern = $pattern;
-    }
+    public function __construct(private readonly string $pattern) {}
 
     public function isFileOrPattern(): bool
     {
-        return !$this->isDirectory() || !file_exists($this->pattern);
+        if (! $this->isDirectory()) {
+            return true;
+        }
+
+        return ! file_exists($this->pattern);
     }
 
     private function directoryPart(): string

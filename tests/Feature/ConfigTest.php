@@ -1,13 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
 
 final class ConfigTest extends WatcherTestCase
 {
-    /** @test */
+    #[Test]
     public function command_line_options_override_config_values(): void
     {
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
@@ -19,7 +22,7 @@ final class ConfigTest extends WatcherTestCase
         $this->assertOutputDoesntContain('directory-to-watch');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_use_config_path_from_command_line_arg(): void
     {
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
@@ -31,7 +34,7 @@ final class ConfigTest extends WatcherTestCase
         $this->assertOutputContains('watching: directory-to-watch');
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_values_from_config(): void
     {
         $configFile = Filesystem::createConfigFile(['watch' => ['first', 'second']]);
@@ -43,7 +46,7 @@ final class ConfigTest extends WatcherTestCase
         $this->assertOutputContains('watching: first, second');
     }
 
-    /** @test */
+    #[Test]
     public function command_line_options_override_values_from_config(): void
     {
         $configFile = Filesystem::createConfigFile(['watch' => ['directory-to-watch']]);
