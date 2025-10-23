@@ -1,13 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
 
 final class ScriptExitTest extends WatcherTestCase
 {
-    /** @test */
+    #[Test]
     public function it_detects_when_script_exits(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
@@ -17,7 +20,7 @@ final class ScriptExitTest extends WatcherTestCase
         $this->assertOutputContains('clean exit - waiting for changes before restart');
     }
 
-    /** @test */
+    #[Test]
     public function it_detects_when_script_crashes(): void
     {
         $fileToWatch = Filesystem::createPHPFileThatCrashes();

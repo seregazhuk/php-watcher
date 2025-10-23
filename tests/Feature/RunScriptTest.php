@@ -1,13 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
 
 final class RunScriptTest extends WatcherTestCase
 {
-    /** @test */
+    #[Test]
     public function it_runs_a_php_script(): void
     {
         $scriptToRun = Filesystem::createHelloWorldPHPFile();
@@ -19,7 +22,7 @@ final class RunScriptTest extends WatcherTestCase
         $this->assertOutputContains('Hello, world');
     }
 
-    /** @test */
+    #[Test]
     public function it_outputs_the_script_stderr(): void
     {
         $scriptToRun = Filesystem::createStdErrorPHPFile();

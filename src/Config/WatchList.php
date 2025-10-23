@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Config;
 
@@ -9,31 +11,36 @@ final class WatchList
     /**
      * @var string[]
      */
-    private $paths;
+    private readonly array $paths;
 
     /**
      * @var string[]
      */
-    private $extensions;
+    private readonly array $extensions;
 
     /**
-     * @var string[]
+     * @param  string[]  $paths
+     * @param  string[]  $extensions
      */
-    private $ignore;
-
-    public function __construct(array $paths = [], array $extensions = [], array $ignore = [])
-    {
-        $this->paths = empty($paths) ? [getcwd()] : $paths;
-        $this->extensions = empty($extensions) ? self::DEFAULT_EXTENSIONS : $extensions;
-        $this->ignore = $ignore;
+    public function __construct(
+        array $paths = [],
+        array $extensions = [],
+        /**
+         * @var string[] $ignore
+         */
+        private readonly array $ignore = []
+    ) {
+        $this->paths = $paths === [] ? [getcwd()] : $paths;
+        $this->extensions = $extensions === [] ? self::DEFAULT_EXTENSIONS : $extensions;
     }
 
-    public function fileExtensions(): array
+    /**
+     * @return string[]
+     */
+    public function getFileExtensions(): array
     {
         return array_map(
-            function ($extension) {
-                return '*.'.$extension;
-            },
+            fn (string $extension): string => '.'.$extension,
             $this->extensions
         );
     }
@@ -41,38 +48,35 @@ final class WatchList
     /**
      * @return string[]
      */
-    public function paths(): array
+    public function getPaths(): array
     {
         return $this->paths;
     }
 
     public function isWatchingForEverything(): bool
     {
-        return empty($this->paths);
+        return $this->paths === [];
     }
 
     public function hasIgnoring(): bool
     {
-        return !empty($this->ignore);
+        return $this->ignore !== [];
     }
 
-    public function ignore(): array
+    /**
+     * @return string[]
+     */
+    public function getIgnored(): array
     {
         return $this->ignore;
-    }
-
-    public static function fromJson(string $json): self
-    {
-        $values = json_decode($json, true);
-        return new self($values['paths'], $values['extensions'], $values['ignore']);
     }
 
     public function merge(self $another): self
     {
         return new self(
-            $this->hasDefaultPath() && !empty($another->paths) ? $another->paths : $this->paths,
-            $this->hasDefaultExtensions() && !empty($another->extensions) ? $another->extensions : $this->extensions,
-            empty($this->ignore) && !empty($another->ignore) ? $another->ignore : $this->ignore
+            $this->hasDefaultPath() && $another->paths !== [] ? $another->paths : $this->paths,
+            $this->hasDefaultExtensions() && $another->extensions !== [] ? $another->extensions : $this->extensions,
+            $this->ignore === [] && $another->ignore !== [] ? $another->ignore : $this->ignore
         );
     }
 
@@ -84,14 +88,5 @@ final class WatchList
     private function hasDefaultExtensions(): bool
     {
         return $this->extensions === self::DEFAULT_EXTENSIONS;
-    }
-
-    public function toJson(): string
-    {
-        return json_encode([
-            'paths' => $this->paths,
-            'ignore' => $this->ignore,
-            'extensions' => $this->extensions
-        ]);
     }
 }
