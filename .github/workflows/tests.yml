@@ -42,9 +42,7 @@ jobs:
           extensions: dom, sockets, grpc, curl ${{ matrix.extensions-suffix }}
 
       - name: Install fswatch
-        run: | 
-          sudo apt-get update \
-          sudo apt-get install fswatch
+        run: sudo apt-get install fswatch
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
