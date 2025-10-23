@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
 
@@ -40,7 +42,7 @@ final class Filesystem
     public static function createHelloWorldPHPFileWithSignalsHandling(): string
     {
         $name = self::buildFilePath('test_signals.php');
-        $code = <<<CODE
+        $code = <<<'CODE'
 <?php declare(ticks = 1);
 
 pcntl_signal(SIGTERM, "handler");
@@ -50,8 +52,8 @@ while (true) {
     echo "Hello, world";
     sleep(1);
 }
-function handler(\$signal) {
-    echo "\$signal signal was received" . PHP_EOL;
+function handler($signal) {
+    echo "$signal signal was received" . PHP_EOL;
     exit;
 }
 CODE;
@@ -60,6 +62,9 @@ CODE;
         return $name;
     }
 
+    /**
+     * @param  array{watch: array<string>}  $options
+     */
     public static function createConfigFile(array $options): string
     {
         $name = self::buildFilePath('.php-watcher.yml');
@@ -75,17 +80,17 @@ CODE;
 
     public static function fixturesDir(): string
     {
-        return realpath(__DIR__ . '/../../../' .  self::FIXTURES_DIR);
+        return self::FIXTURES_DIR;
     }
 
     private static function buildFilePath(string $filename): string
     {
-        return self::FIXTURES_DIR . $filename;
+        return self::FIXTURES_DIR.$filename;
     }
 
     public static function clear(): void
     {
-        $files = glob(self::FIXTURES_DIR . '/*');
+        $files = glob(self::FIXTURES_DIR.'/*');
         foreach ($files as $file) {
             if (is_file($file)) {
                 @unlink($file);

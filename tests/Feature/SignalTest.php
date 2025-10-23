@@ -1,16 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
 
 final class SignalTest extends WatcherTestCase
 {
-    /** @test */
+    #[Test]
     public function it_sends_a_specified_signal_to_restart_the_app(): void
     {
-        //if (!defined('SIGTERM')) {
+        if (! defined('SIGTERM')) {
             $this->markTestSkipped('SIGTERM is not defined');
         //}
 
@@ -21,6 +24,6 @@ final class SignalTest extends WatcherTestCase
         Filesystem::createHelloWorldPHPFile();
         $this->wait();
 
-        $this->assertOutputContains(SIGTERM . ' signal was received');
+        $this->assertOutputContains(SIGTERM.' signal was received');
     }
 }

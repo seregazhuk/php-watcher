@@ -2,8 +2,16 @@ language: php
 
 jobs:
   include:
-    - stage: "PHP7.4 - highest"
+    - stage: "PHP7.4 - lowest"
       php: 7.4
+      script:
+        - composer update -n --prefer-dist --no-suggest
+        - composer dump-autoload
+        - composer ci:tests
+        - composer ci:php:psalm
+
+    - stage: "PHP8.0 - highest"
+      php: 8.0
       script:
         - composer update -n --prefer-dist --no-suggest
         - composer dump-autoload

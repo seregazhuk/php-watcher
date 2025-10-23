@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
 
@@ -9,16 +11,10 @@ use seregazhuk\PhpWatcher\Screen\Screen;
 
 final class ProcessRunner
 {
-    private $loop;
+    private readonly ReactPHPProcess $process;
 
-    private $screen;
-
-    private $process;
-
-    public function __construct(LoopInterface $loop, Screen $screen, string $command)
+    public function __construct(private readonly LoopInterface $loop, private readonly Screen $screen, string $command)
     {
-        $this->loop = $loop;
-        $this->screen = $screen;
         $this->process = new ReactPHPProcess($command);
     }
 
@@ -40,7 +36,7 @@ final class ProcessRunner
     public function restart(float $delayToRestart): void
     {
         $this->screen->restarting($this->process->getCommand());
-        $this->loop->addTimer($delayToRestart, [$this, 'start']);
+        $this->loop->addTimer($delayToRestart, $this->start(...));
     }
 
     private function subscribeToProcessOutput(): void
@@ -49,8 +45,8 @@ final class ProcessRunner
             throw new RuntimeException('Cannot open I/O for a process');
         }
 
-        $this->process->stdout->on('data', [$this->screen, 'plainOutput']);
-        $this->process->stderr->on('data', [$this->screen, 'plainOutput']);
-        $this->process->on('exit', [$this->screen, 'processExit']);
+        $this->process->stdout->on('data', $this->screen->plainOutput(...));
+        $this->process->stderr->on('data', $this->screen->plainOutput(...));
+        $this->process->on('exit', $this->screen->processExit(...));
     }
 }

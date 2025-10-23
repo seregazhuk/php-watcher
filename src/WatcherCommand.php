@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace seregazhuk\PhpWatcher;
 
 use AlecRabbit\Snake\Contracts\SpinnerInterface;
-use React\EventLoop\Factory;
+use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Config\Config;
 use seregazhuk\PhpWatcher\Config\InputExtractor;
-use seregazhuk\PhpWatcher\Filesystem\Factory as ChangesListenerFactory;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
+use seregazhuk\PhpWatcher\SystemRequirements\SystemRequirements;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -56,40 +57,41 @@ final class WatcherCommand extends BaseCommand
             ->addOption('no-spinner', null, InputOption::VALUE_NONE, 'Remove spinner from output');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $loop = Factory::create();
         $config = $this->buildConfig(new InputExtractor($input));
         $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
-
         $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
-        $filesystem = ChangesListenerFactory::create($config->watchList(), $loop);
 
+        $requirements = new SystemRequirements($screen);
+        if ($requirements->check() === false) {
+            return Command::FAILURE;
+        }
+
+        $loop = Loop::get();
+        $this->addTerminationListeners($loop, $spinner);
+        $filesystem = new ChangesListener($loop);
         $screen->showOptions($config->watchList());
         $processRunner = new ProcessRunner($loop, $screen, $config->command());
-        $this->addTerminationListeners($loop, $spinner, $filesystem);
 
         $watcher = new Watcher($loop, $filesystem);
         $watcher->startWatching(
             $processRunner,
+            $config->watchList(),
             $config->signalToReload(),
             $config->delay()
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
-     * When terminating the watcher we need to manually restore the cursor after the spinner.
+     * When terminating the watcher, we need to manually restore the cursor after the spinner.
      */
-    private function addTerminationListeners(
-        LoopInterface $loop,
-        SpinnerInterface $spinner,
-        ChangesListener $changesListener
-    ): void {
-        $func = static function (int $signal) use ($spinner, $changesListener): void {
+    private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner): void
+    {
+        $func = static function (int $signal) use ($spinner): never {
             $spinner->end();
-            $changesListener->stop();
             exit($signal);
         };
 
@@ -99,7 +101,7 @@ final class WatcherCommand extends BaseCommand
 
     private function buildConfig(InputExtractor $input): Config
     {
-        $builder = new Builder();
+        $builder = new Builder;
         $fromFile = $builder->fromConfigFile($input->getStringOption('config'));
         $fromCommandLineArgs = $builder->fromCommandLineArgs($input);
 

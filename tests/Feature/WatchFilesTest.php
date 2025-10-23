@@ -1,13 +1,16 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature;
 
-use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
+use seregazhuk\PhpWatcher\Tests\Feature\Helper\WatcherTestCase;
 
 final class WatchFilesTest extends WatcherTestCase
 {
-    /** @test */
+    #[Test]
     public function it_watches_changes_in_a_certain_file(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();
@@ -19,7 +22,7 @@ final class WatchFilesTest extends WatcherTestCase
         $this->assertOutputContains('Something changed');
     }
 
-    /** @test */
+    #[Test]
     public function it_reloads_by_changes_in_a_watched_file(): void
     {
         $fileToWatch = Filesystem::createHelloWorldPHPFile();

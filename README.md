@@ -1,8 +1,6 @@
 # PHP-watcher
 
 [![PHP Version](https://img.shields.io/packagist/php-v/seregazhuk/php-watcher.svg)](https://php.net/)
-[![Build Status](https://travis-ci.org/seregazhuk/php-watcher.svg?branch=master)](https://travis-ci.org/seregazhuk/php-watcher)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/seregazhuk/php-watcher/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/seregazhuk/php-watcher/?branch=master)
 [![Total Downloads](https://poser.pugx.org/seregazhuk/php-watcher/downloads)](https://packagist.org/packages/seregazhuk/php-watcher)
 
 [![Latest Stable Version](https://poser.pugx.org/seregazhuk/php-watcher/v/stable)](https://packagist.org/packages/seregazhuk/php-watcher)
@@ -57,6 +55,9 @@ Alternatively, you can install the package locally as a dev dependency in your
 composer require seregazhuk/php-watcher --dev
 ```
 Locally installed you can run it with `vendor/bin/php-watcher`.
+
+Under the hood, to watch filesystem changes, PHP-watcher uses JavaScript package [chokidar](https://github.com/paulmillr/chokidar).
+At first run it will check and install it if required.
 
 ## Usage
 
@@ -270,11 +271,3 @@ php-watcher server.php --no-spinner
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)
 
-## How can I thank you?
-
-Why not star this GitHub repo? I'd love the attention!
-Or, you can donate to my project on PayPal:
-
-[![Support me with some coffee](https://img.shields.io/badge/donate-paypal-orange.svg)](https://www.paypal.me/seregazhuk)
-
-Thanks! 

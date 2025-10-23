@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Feature\Helper;
 
@@ -18,9 +20,12 @@ abstract class WatcherTestCase extends TestCase
         usleep(self::WAIT_TIMEOUT_MS);
     }
 
+    /**
+     * @param  string[]  $options
+     */
     protected function watch(string $scriptToRun, array $options = []): void
     {
-        $this->watcherRunner = (new WatcherRunner())->run($scriptToRun, $options);
+        $this->watcherRunner = (new WatcherRunner)->run($scriptToRun, $options);
     }
 
     public function assertOutputContains(string $string): void

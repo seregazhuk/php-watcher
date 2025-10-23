@@ -1,5 +1,6 @@
-<?php declare(strict_types=1);
+<?php
 
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Tests\Unit;
 
@@ -14,7 +15,7 @@ final class SpinnerFactoryTest extends TestCase
     /** @test */
     public function it_should_return_void_spinner_if_spinner_is_disabled(): void
     {
-        $output = new ConsoleOutput();
+        $output = new ConsoleOutput;
         $spinner = SpinnerFactory::create($output, $spinnerDisabled = true);
         $this->assertInstanceOf(VoidSpinner::class, $spinner);
     }
@@ -22,7 +23,7 @@ final class SpinnerFactoryTest extends TestCase
     /** @test */
     public function it_should_return_void_spinner_if_ansi_output_is_not_supported(): void
     {
-        $output = new NullOutput();
+        $output = new NullOutput;
         $spinner = SpinnerFactory::create($output, $spinnerDisabled = false);
         $this->assertInstanceOf(VoidSpinner::class, $spinner);
     }

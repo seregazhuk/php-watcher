@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\Screen;
 
@@ -11,10 +13,10 @@ final class SpinnerFactory
     public static function create(OutputInterface $output, bool $spinnerDisabled): SpinnerInterface
     {
         $hasColorSupport = $output->getFormatter()->isDecorated();
-        if (!$hasColorSupport || $spinnerDisabled) {
-            return new VoidSpinner();
+        if (! $hasColorSupport || $spinnerDisabled) {
+            return new VoidSpinner;
         }
 
-        return new Spinner();
+        return new Spinner;
     }
 }
