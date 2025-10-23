@@ -1,7 +1,6 @@
 # PHP-watcher
 
 [![PHP Version](https://img.shields.io/packagist/php-v/seregazhuk/php-watcher.svg)](https://php.net/)
-[![Build Status](https://travis-ci.org/seregazhuk/php-watcher.svg?branch=master)](https://travis-ci.org/seregazhuk/php-watcher)
 [![Total Downloads](https://poser.pugx.org/seregazhuk/php-watcher/downloads)](https://packagist.org/packages/seregazhuk/php-watcher)
 
 [![Latest Stable Version](https://poser.pugx.org/seregazhuk/php-watcher/v/stable)](https://packagist.org/packages/seregazhuk/php-watcher)
@@ -249,11 +248,3 @@ php-watcher server.php --no-spinner
 
 MIT [http://rem.mit-license.org](http://rem.mit-license.org)
 
-## How can I thank you?
-
-Why not star this GitHub repo? I'd love the attention!
-Or, you can donate to my project on PayPal:
-
-[![Support me with some coffee](https://img.shields.io/badge/donate-paypal-orange.svg)](https://www.paypal.me/seregazhuk)
-
-Thanks! 
