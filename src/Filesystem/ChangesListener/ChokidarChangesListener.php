@@ -6,6 +6,7 @@ namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\TimerInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
@@ -15,6 +16,7 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
     private const INTERVAL = 0.15;
 
     private ?Process $process = null;
+    private ?TimerInterface $timer = null;
 
     public function __construct(private readonly LoopInterface $loop) {}
 
@@ -31,7 +33,7 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
         $this->process = new Process(command: $command);
         $this->process->start();
 
-        $this->loop->addPeriodicTimer(
+        $this->timer = $this->loop->addPeriodicTimer(
             self::INTERVAL,
             function (): void {
                 $output = $this->process->getIncrementalOutput();
@@ -51,6 +53,10 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
     {
         if ($this->process instanceof Process && $this->process->isRunning()) {
             $this->process->stop();
+        }
+
+        if ($this->timer !== null) {
+            $this->loop->cancelTimer($this->timer);
         }
     }
 

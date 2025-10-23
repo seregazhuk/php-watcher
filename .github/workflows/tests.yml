@@ -41,6 +41,12 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, sockets, grpc, curl ${{ matrix.extensions-suffix }}
 
+      - name: Install fswatch
+        run: | 
+          sudo add-apt-repository ppa:hadret/fswatch \
+          sudo apt-get update \
+          sudo apt-get install fswatch
+
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
 

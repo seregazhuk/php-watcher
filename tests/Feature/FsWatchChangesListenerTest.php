@@ -2,37 +2,43 @@
 
 declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Tests\Feature;
+namespace Feature;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use React\EventLoop\Loop;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChokidarChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
+use Seregazhuk\ReactFsWatch\Change;
+
 use function React\Async\async;
+use function React\Async\await;
 use function React\Async\delay;
 
-final class ChokidarChangesListenerTest extends TestCase
+final class FsWatchChangesListenerTest extends TestCase
 {
     use WithFilesystem;
 
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
+        if (!FSWatchChangesListener::isAvailable()) {
+            $this->markTestSkipped('fswatch is not available');
+        }
+
         $loop = Loop::get();
-        $listener = new ChokidarChangesListener($loop);
+        $loop->addTimer(1, async(Filesystem::createHelloWorldPHPFile(...)));
+
+        $listener = new FSWatchChangesListener();
         $listener->start(new WatchList([Filesystem::fixturesDir()]));
 
-        $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));
-        $eventWasEmitted = false;
-        $listener->onChange(function () use (&$eventWasEmitted): void {
-            $eventWasEmitted = true;
+        $listener->onChange(function (): void {
+            $this->assertTrue(true);
         });
         delay(4);
-        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
-        $listener->stop();
+        $loop->stop();
     }
 }

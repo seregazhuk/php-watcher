@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
-use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use Seregazhuk\ReactFsWatch\FsWatch;
 
 final class FSWatchChangesListener extends EventEmitter implements ChangesListenerInterface
 {
     private ?FsWatch $fsWatch = null;
-
-    public function __construct(private readonly LoopInterface $loop) {}
 
     public static function isAvailable(): bool
     {
@@ -22,15 +19,10 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
     public function start(WatchList $watchList): void
     {
-        $this->fsWatch = new FsWatch($this->makeOptions($watchList), $this->loop);
+        $this->fsWatch = new FsWatch($this->makeOptions($watchList));
 
         $this->fsWatch->run();
-        $this->fsWatch->on(
-            'change',
-            function (): void {
-                $this->emit('change');
-            }
-        );
+        $this->fsWatch->onChange(fn() => $this->emit('change'));
     }
 
     public function onChange(callable $callback): void
