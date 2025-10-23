@@ -15,7 +15,7 @@ final class SignalTest extends WatcherTestCase
     {
         if (! defined('SIGTERM')) {
             $this->markTestSkipped('SIGTERM is not defined');
-        //}
+        }
 
         $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
         $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', Filesystem::fixturesDir()]);

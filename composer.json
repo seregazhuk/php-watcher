@@ -31,6 +31,7 @@
         "react/child-process": "^0.6.1",
         "react/event-loop": "^1.1",
         "react/stream": "^1.0.0",
+        "seregazhuk/reactphp-fswatch": "^1.0.0",
         "spatie/file-system-watcher": "^1.2",
         "symfony/console": "^6.0",
         "symfony/finder": "^6.0",

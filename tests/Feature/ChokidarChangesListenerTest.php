@@ -8,13 +8,13 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use React\EventLoop\Loop;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChokidarChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
 use function React\Async\delay;
 
-final class ChangesListenerTest extends TestCase
+final class ChokidarChangesListenerTest extends TestCase
 {
     use WithFilesystem;
 
@@ -28,7 +28,7 @@ final class ChangesListenerTest extends TestCase
     public function it_emits_change_event_on_changes(): void
     {
         $loop = Loop::get();
-        $listener = new ChangesListener($loop);
+        $listener = new ChokidarChangesListener($loop);
         $listener->start(new WatchList([Filesystem::fixturesDir()]));
 
         $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));

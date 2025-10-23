@@ -56,9 +56,6 @@ composer require seregazhuk/php-watcher --dev
 ```
 Locally installed you can run it with `vendor/bin/php-watcher`.
 
-Under the hood, to watch filesystem changes, PHP-watcher uses JavaScript package [chokidar](https://github.com/paulmillr/chokidar).
-At first run it will check and install it if required.
-
 ## Usage
 
 All the examples assume you've installed the package globally. If you opted for the local installation prepend `vendor/bin/` everywhere where `php-watcher` is mentioned.
@@ -242,19 +239,18 @@ script crashes PHP-watcher will notify you about that.
 The watcher can use different strategies to monitor your file system changes. Under the hood it 
 detects the environment and chooses the best suitable strategy.
 
-### Resource-Watcher
-
-By default, it uses [yosymfony/resource-watcher](https://github.com/yosymfony/resource-watcher
-) which is the slowest, and most resource intensive option, but it should work on all environments. 
-Under the hood it is constantly asking the filesystem whether there are new changes or not. 
-
 ### Fswatch
 
-[FsWatch](https://github.com/emcrisostomo/fswatch) is a cross-platform (Linux,Mac,Windows) file change monitor which will automatically
- use the platforms native functionality when possible. Under the hood the filesystem notifies us
-  when any changes occur. If your system has fswatch installed this strategy will be used. 
+[FsWatch](https://github.com/emcrisostomo/fswatch) is a cross-platform (Linux,Mac,Windows) file change monitor that will automatically
+use the platforms native functionality when possible. Under the hood the filesystem notifies us
+when any changes occur. If your system has fswatch installed, this strategy will be used.
 
 **Has not been extensively tested.**
+
+### Chokidar
+
+[Chokidar](https://github.com/paulmillr/chokidar) is a JavaScript package for watching file and directory changes.
+At first run the watcher will check if Node.js is available in the system. If it is, it will install chokidar into the project.
 
 ## Spinner
 

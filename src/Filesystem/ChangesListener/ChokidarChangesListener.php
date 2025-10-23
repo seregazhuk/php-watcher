@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Filesystem;
+namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
 use React\EventLoop\LoopInterface;
@@ -10,9 +10,11 @@ use seregazhuk\PhpWatcher\Config\WatchList;
 use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
-final class ChangesListener extends EventEmitter
+final class ChokidarChangesListener extends EventEmitter implements ChangesListenerInterface
 {
     private const INTERVAL = 0.15;
+
+    private ?Process $process = null;
 
     public function __construct(private readonly LoopInterface $loop) {}
 
@@ -20,19 +22,19 @@ final class ChangesListener extends EventEmitter
     {
         $command = [
             (new ExecutableFinder)->find('node'),
-            realpath(__DIR__.'/../../bin/file-watcher.js'),
+            realpath(__DIR__.'/../../../bin/file-watcher.js'),
             json_encode($watchList->getPaths()),
             json_encode($watchList->getIgnored()),
             json_encode($watchList->getFileExtensions()),
         ];
 
-        $process = new Process(command: $command);
-        $process->start();
+        $this->process = new Process(command: $command);
+        $this->process->start();
 
         $this->loop->addPeriodicTimer(
             self::INTERVAL,
-            function () use ($process): void {
-                $output = $process->getIncrementalOutput();
+            function (): void {
+                $output = $this->process->getIncrementalOutput();
                 if ($output !== '') {
                     $this->emit('change');
                 }
@@ -43,5 +45,17 @@ final class ChangesListener extends EventEmitter
     public function onChange(callable $callback): void
     {
         $this->on('change', $callback);
+    }
+
+    public function stop(): void
+    {
+        if ($this->process instanceof Process && $this->process->isRunning()) {
+            $this->process->stop();
+        }
+    }
+
+    public function getName(): string
+    {
+        return 'chokidar';
     }
 }

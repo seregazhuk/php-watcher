@@ -8,6 +8,7 @@ use AlecRabbit\Snake\Contracts\SpinnerInterface;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\ConsoleApplication;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChangesListenerInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
@@ -59,7 +60,7 @@ final class Screen
         $this->info(sprintf('starting `%s`', trim($command)));
     }
 
-    public function restarting(?string $command = null): void
+    public function restarting(): void
     {
         $this->spinner->erase();
         $this->output->writeln('');
@@ -91,5 +92,10 @@ final class Screen
     private function message(string $text): string
     {
         return sprintf('[%s] %s', ConsoleApplication::NAME, $text);
+    }
+
+    public function showFilesystemListener(ChangesListenerInterface $filesystemListener): void
+    {
+        $this->comment('using filesystem listener: '.$filesystemListener->getName());
     }
 }

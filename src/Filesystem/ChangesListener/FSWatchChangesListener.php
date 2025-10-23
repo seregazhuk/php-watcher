@@ -2,34 +2,32 @@
 
 declare(strict_types=1);
 
-namespace seregazhuk\PhpWatcher\Filesystem\FsWatchBased;
+namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use seregazhuk\PhpWatcher\Filesystem\ChangesListener as ChangesListenerInterface;
 use Seregazhuk\ReactFsWatch\FsWatch;
 
-final class ChangesListener extends EventEmitter implements ChangesListenerInterface
+final class FSWatchChangesListener extends EventEmitter implements ChangesListenerInterface
 {
-    private FsWatch $fsWatch;
+    private ?FsWatch $fsWatch = null;
 
-    public function __construct(WatchList $watchList, LoopInterface $loop)
-    {
-        $this->fsWatch = new FsWatch($this->makeOptions($watchList), $loop);
-    }
+    public function __construct(private readonly LoopInterface $loop) {}
 
     public static function isAvailable(): bool
     {
         return FsWatch::isAvailable();
     }
 
-    public function start(): void
+    public function start(WatchList $watchList): void
     {
+        $this->fsWatch = new FsWatch($this->makeOptions($watchList), $this->loop);
+
         $this->fsWatch->run();
         $this->fsWatch->on(
             'change',
-            function () {
+            function (): void {
                 $this->emit('change');
             }
         );
@@ -42,7 +40,9 @@ final class ChangesListener extends EventEmitter implements ChangesListenerInter
 
     public function stop(): void
     {
-        $this->fsWatch->stop();
+        if ($this->fsWatch instanceof FsWatch) {
+            $this->fsWatch->stop();
+        }
     }
 
     private function makeOptions(WatchList $watchList): string
@@ -50,17 +50,17 @@ final class ChangesListener extends EventEmitter implements ChangesListenerInter
         $options = [];
 
         // first come paths
-        if ($watchList->paths()) {
-            $options[] = implode(' ', $watchList->paths());
+        if ($watchList->getPaths() !== []) {
+            $options[] = implode(' ', $watchList->getPaths());
         }
 
         // then we ignore
-        if ($watchList->ignore()) {
-            $options[] = '-e ' . implode(' ', $watchList->ignore());
+        if ($watchList->getIgnored() !== []) {
+            $options[] = '-e '.implode(' ', $watchList->getIgnored());
         }
 
         // then include
-        if ($watchList->fileExtensions()) {
+        if ($watchList->getFileExtensions() !== []) {
             $options = array_merge($options, $this->makeIncludeOptions($watchList));
         }
 
@@ -69,21 +69,28 @@ final class ChangesListener extends EventEmitter implements ChangesListenerInter
         return implode(' ', $options);
     }
 
+    /**
+     * @return string[]
+     */
     private function makeIncludeOptions(WatchList $watchList): array
     {
         $options = [];
         // Before including we need to ignore everything
-        if (empty($watchList->ignore())) {
+        if ($watchList->getIgnored() === []) {
             $options[] = '-e ".*"';
         }
 
         $regexpWithExtensions = array_map(
-            static function ($extension) {
-                return str_replace('*.', '.', $extension) . '$';
-            },
-            $watchList->fileExtensions()
+            static fn ($extension) => str_replace('*.', '.', $extension).'$',
+            $watchList->getFileExtensions()
         );
-        $options[] = '-i ' . implode(' ', $regexpWithExtensions);
+        $options[] = '-i '.implode(' ', $regexpWithExtensions);
+
         return $options;
+    }
+
+    public function getName(): string
+    {
+        return 'fswatch';
     }
 }

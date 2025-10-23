@@ -35,7 +35,7 @@ final class ProcessRunner
 
     public function restart(float $delayToRestart): void
     {
-        $this->screen->restarting($this->process->getCommand());
+        $this->screen->restarting();
         $this->loop->addTimer($delayToRestart, $this->start(...));
     }
 
