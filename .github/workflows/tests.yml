@@ -60,4 +60,4 @@ jobs:
 
       - name: Run tests with Phpunit
         run: |
-          XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite unit
+          XDEBUG_MODE=coverage php vendor/bin/phpunit 
