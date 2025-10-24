@@ -20,6 +20,8 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
     public function start(WatchList $watchList): void
     {
+        // We need to manually check ignored paths
+        // https://stackoverflow.com/questions/34713278/fswatch-to-watch-only-a-certain-file-extension
         $checkPathIsIgnored = function (string $path) use ($watchList): bool {
             foreach ($watchList->getIgnored() as $ignoredPath) {
                 if (realpath($ignoredPath) === false && basename($path) === $ignoredPath) {

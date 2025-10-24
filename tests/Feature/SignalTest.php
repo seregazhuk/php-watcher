@@ -23,6 +23,7 @@ final class SignalTest extends WatcherTestCase
 
         Filesystem::createHelloWorldPHPFile();
         $this->wait();
+        $this->wait();
 
         $this->assertOutputContains(SIGTERM.' signal was received');
     }
