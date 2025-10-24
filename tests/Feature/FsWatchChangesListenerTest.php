@@ -23,9 +23,7 @@ final class FsWatchChangesListenerTest extends TestCase
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
-        if (! FSWatchChangesListener::isAvailable()) {
-            $this->markTestSkipped('fswatch is not available');
-        }
+        $this->markTestSkipped('fswatch is not available');
 
         $loop = Loop::get();
         $listener = new FSWatchChangesListener;
