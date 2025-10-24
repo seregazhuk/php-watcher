@@ -74,6 +74,7 @@ final class Screen
     {
         if ($exitCode === null) {
             $this->info('Stopping watcher...');
+
             return;
         }
         if ($exitCode === 0) {

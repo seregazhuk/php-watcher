@@ -20,11 +20,24 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
     public function start(WatchList $watchList): void
     {
+        $checkPathIsIgnored = function (string $path) use ($watchList): bool {
+            foreach ($watchList->getIgnored() as $ignoredPath) {
+                if (realpath($ignoredPath) === false && basename($path) === $ignoredPath) {
+                    return true;
+                }
+                if (realpath($ignoredPath) !== false && $path === $ignoredPath) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         $this->fsWatch = new FsWatch($this->makeOptions($watchList));
         $this->fsWatch->run();
-        $this->fsWatch->onChange(function (Change $fsWatchChange) use ($watchList) {
-            $isIgnored = in_array($fsWatchChange->file(), $watchList->getIgnored(), true);
-            if (!$isIgnored) {
+        $this->fsWatch->onChange(function (Change $fsWatchChange) use ($checkPathIsIgnored): void {
+            $isIgnored = $checkPathIsIgnored($fsWatchChange->file());
+            if (! $isIgnored) {
                 $this->emit('change');
             }
         });
@@ -73,10 +86,10 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         }
 
         $regexpWithExtensions = array_map(
-            static fn($extension) => '"' . str_replace('*.', '.', $extension) . '$"',
+            static fn ($extension): string => '"'.str_replace('*.', '.', $extension).'$"',
             $watchList->getFileExtensions()
         );
-        $options[] = '-i ' . implode(' ', $regexpWithExtensions);
+        $options[] = '-i '.implode(' ', $regexpWithExtensions);
 
         return $options;
     }
