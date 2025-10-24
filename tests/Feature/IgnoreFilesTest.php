@@ -31,6 +31,6 @@ final class IgnoreFilesTest extends WatcherTestCase
 
         Filesystem::changeFileContentsWith($fileToWatch, '<?php echo "Something changed"; ');
         $this->wait();
-        $this->assertOutputDoesntContain('restarting due to changes...');
+        $this->assertOutputDoesntContain('restarting due to changes');
     }
 }
