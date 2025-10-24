@@ -37,6 +37,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
         $this->fsWatch = new FsWatch($this->makeOptions($watchList));
         $this->fsWatch->run();
+        $this->fsWatch->on('error', static fn ($error) => print_r($error));
         $this->fsWatch->onChange(function (Change $fsWatchChange) use ($checkPathIsIgnored): void {
             $isIgnored = $checkPathIsIgnored($fsWatchChange->file());
             if (! $isIgnored) {
