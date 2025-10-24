@@ -13,6 +13,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
 {
+    private ?\React\EventLoop\TimerInterface $spinTimer = null;
+
     public function __construct(private readonly SymfonyStyle $output, private readonly SpinnerInterface $spinner) {}
 
     public function showOptions(WatchList $watchList): void
@@ -84,9 +86,17 @@ final class Screen
     public function showSpinner(LoopInterface $loop): void
     {
         $this->spinner->begin();
-        $loop->addPeriodicTimer($this->spinner->interval(), function (): void {
+        $this->spinTimer = $loop->addPeriodicTimer($this->spinner->interval(), function (): void {
             $this->spinner->spin();
         });
+    }
+
+    public function stop(LoopInterface $loop): void
+    {
+        $this->spinner->end();
+        if ($this->spinTimer instanceof \React\EventLoop\TimerInterface) {
+            $loop->cancelTimer($this->spinTimer);
+        }
     }
 
     private function message(string $text): string

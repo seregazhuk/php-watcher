@@ -56,7 +56,7 @@ final class ChokidarChangesListener extends EventEmitter implements ChangesListe
             $this->process->stop();
         }
 
-        if ($this->timer instanceof \React\EventLoop\TimerInterface) {
+        if ($this->timer instanceof TimerInterface) {
             $this->loop->cancelTimer($this->timer);
         }
     }

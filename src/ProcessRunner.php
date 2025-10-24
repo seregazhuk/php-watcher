@@ -23,7 +23,7 @@ final class ProcessRunner
         $this->screen->start($this->process->getCommand());
         $this->screen->showSpinner($this->loop);
 
-        $this->process->start($this->loop);
+        $this->process->start();
         $this->subscribeToProcessOutput();
     }
 

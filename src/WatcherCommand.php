@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
 
-use AlecRabbit\Snake\Contracts\SpinnerInterface;
 use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
@@ -72,7 +71,7 @@ final class WatcherCommand extends BaseCommand
 
             return Command::FAILURE;
         }
-        $this->addTerminationListeners($loop, $spinner, $filesystemListener);
+        $this->addTerminationListeners($loop, $screen, $filesystemListener);
 
         $screen->showOptions($config->watchList());
         $screen->showFilesystemListener($filesystemListener);
@@ -92,10 +91,10 @@ final class WatcherCommand extends BaseCommand
     /**
      * When terminating the watcher, we need to manually restore the cursor after the spinner.
      */
-    private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner, ChangesListenerInterface $changesListener): void
+    private function addTerminationListeners(LoopInterface $loop, Screen $screen, ChangesListenerInterface $changesListener): void
     {
-        $func = static function (int $signal) use ($spinner, $changesListener): never {
-            $spinner->end();
+        $func = static function (int $signal) use ($screen, $changesListener, $loop): never {
+            $screen->stop($loop);
             $changesListener->stop();
             exit($signal);
         };

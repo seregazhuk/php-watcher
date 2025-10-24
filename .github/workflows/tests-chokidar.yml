@@ -1,4 +1,4 @@
-name: 'Tests'
+name: 'Tests with Chokidar'
 
 on:
   push:
@@ -19,6 +19,7 @@ on:
 
 jobs:
   tests:
+    timeout-minutes: 5
     name: Tests with Chokidar (PHP ${{ matrix.php }}, OS ${{ matrix.os }})
 
     runs-on: ${{ matrix.os }}
