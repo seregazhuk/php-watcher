@@ -6,7 +6,6 @@ namespace Feature;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use React\ChildProcess\Process;
 use React\EventLoop\Loop;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
@@ -23,11 +22,7 @@ final class FsWatchChangesListenerTest extends TestCase
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
-        $process = new Process("which fswatch");
-        $process->start();
-        delay(0.1);
-
-        if ($process->getExitCode() !== 0) {
+        if (! FSWatchChangesListener::isAvailable()) {
             $this->markTestSkipped('fswatch is not available');
         }
 
