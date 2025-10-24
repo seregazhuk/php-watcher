@@ -46,7 +46,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, sockets, grpc, pcntl, curl ${{ matrix.extensions-suffix }}
+          extensions: dom, sockets, pcntl
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
