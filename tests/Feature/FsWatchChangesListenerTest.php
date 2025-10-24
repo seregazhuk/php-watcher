@@ -37,13 +37,8 @@ final class FsWatchChangesListenerTest extends TestCase
         $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));
 
         $listener->start(new WatchList([__DIR__ . '/../../' .Filesystem::fixturesDir()]));
+        delay(3);
         $loop->addTimer(4, fn () => $loop->stop());
-        $fswatch = new Process(['fswatch', '-xrn', '../../tests/fixtures/', '-e', '".*"', '-i', '.php$', '-I']);
-        $fswatch->start();
-        sleep(1);
-        $fswatch->stop();
-        $this->assertSame('test', $fswatch->getOutput() . ' ' . $fswatch->getErrorOutput());
-
-//        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
+        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
     }
 }
