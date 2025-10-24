@@ -33,6 +33,5 @@ final class ChokidarChangesListenerTest extends TestCase
         delay(4);
         $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
         $listener->stop();
-        $loop->stop();
     }
 }

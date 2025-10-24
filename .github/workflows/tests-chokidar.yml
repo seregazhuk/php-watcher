@@ -36,6 +36,9 @@ jobs:
       - name: Check Out Code
         uses: actions/checkout@v4
 
+      - name: Remove fswatch
+        run: sudo apt-get uninstall fswatch
+
       - name: Setup node
         uses: actions/setup-node@v6
 
