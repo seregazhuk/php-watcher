@@ -9,6 +9,8 @@ use React\EventLoop\LoopInterface;
 use RuntimeException;
 use seregazhuk\PhpWatcher\Screen\Screen;
 
+use function React\Async\delay;
+
 final class ProcessRunner
 {
     private readonly ReactPHPProcess $process;
@@ -23,7 +25,9 @@ final class ProcessRunner
         $this->screen->start($this->process->getCommand());
         $this->screen->showSpinner($this->loop);
 
-        $this->process->start();
+        if (!$this->process->isRunning()) {
+            $this->process->start();
+        }
         $this->subscribeToProcessOutput();
     }
 
