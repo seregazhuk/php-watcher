@@ -96,6 +96,7 @@ final class WatcherCommand extends BaseCommand
         $func = static function (int $signal) use ($screen, $changesListener, $loop): never {
             $screen->stop($loop);
             $changesListener->stop();
+            $loop->stop();
             exit($signal);
         };
 

@@ -6,6 +6,7 @@ namespace seregazhuk\PhpWatcher\Screen;
 
 use AlecRabbit\Snake\Contracts\SpinnerInterface;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\TimerInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\ConsoleApplication;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChangesListenerInterface;
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class Screen
 {
-    private ?\React\EventLoop\TimerInterface $spinTimer = null;
+    private ?TimerInterface $spinTimer = null;
 
     public function __construct(private readonly SymfonyStyle $output, private readonly SpinnerInterface $spinner) {}
 
@@ -69,8 +70,12 @@ final class Screen
         $this->info('restarting due to changes...');
     }
 
-    public function processExit(int $exitCode): void
+    public function processExit(?int $exitCode): void
     {
+        if ($exitCode === null) {
+            $this->info('Stopping watcher...');
+            return;
+        }
         if ($exitCode === 0) {
             $this->info('clean exit - waiting for changes before restart');
         } else {
@@ -94,7 +99,7 @@ final class Screen
     public function stop(LoopInterface $loop): void
     {
         $this->spinner->end();
-        if ($this->spinTimer instanceof \React\EventLoop\TimerInterface) {
+        if ($this->spinTimer instanceof TimerInterface) {
             $loop->cancelTimer($this->spinTimer);
         }
     }

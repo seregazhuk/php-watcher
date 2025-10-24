@@ -6,6 +6,7 @@ namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
 use seregazhuk\PhpWatcher\Config\WatchList;
+use Seregazhuk\ReactFsWatch\Change;
 use Seregazhuk\ReactFsWatch\FsWatch;
 
 final class FSWatchChangesListener extends EventEmitter implements ChangesListenerInterface
@@ -21,7 +22,12 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
     {
         $this->fsWatch = new FsWatch($this->makeOptions($watchList));
         $this->fsWatch->run();
-        $this->fsWatch->onChange(fn () => $this->emit('change'));
+        $this->fsWatch->onChange(function (Change $fsWatchChange) use ($watchList) {
+            $isIgnored = in_array($fsWatchChange->file(), $watchList->getIgnored(), true);
+            if (!$isIgnored) {
+                $this->emit('change');
+            }
+        });
     }
 
     public function onChange(callable $callback): void
@@ -43,11 +49,6 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         // first come paths
         if ($watchList->getPaths() !== []) {
             $options[] = implode(' ', $watchList->getPaths());
-        }
-
-        // then we ignore
-        if ($watchList->getIgnored() !== []) {
-            $options[] = '-e '.implode(' ', $watchList->getIgnored());
         }
 
         // then include
@@ -72,10 +73,10 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         }
 
         $regexpWithExtensions = array_map(
-            static fn ($extension) => '"'. str_replace('*.', '.', $extension).'$"',
+            static fn($extension) => '"' . str_replace('*.', '.', $extension) . '$"',
             $watchList->getFileExtensions()
         );
-        $options[] = '-i '.implode(' ', $regexpWithExtensions);
+        $options[] = '-i ' . implode(' ', $regexpWithExtensions);
 
         return $options;
     }
