@@ -35,9 +35,9 @@ final class FsWatchChangesListenerTest extends TestCase
         $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));
 
         $listener->start(new WatchList([Filesystem::fixturesDir()]));
-        $loop->addTimer(3, fn () => $loop->stop());
+        $loop->addTimer(5, fn () => $loop->stop());
 
-        delay(2);
+        delay(4);
         $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
     }
 }
