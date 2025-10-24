@@ -18,13 +18,12 @@ final class SignalTest extends WatcherTestCase
         }
 
         $scriptToRun = Filesystem::createHelloWorldPHPFileWithSignalsHandling();
-        $this->watch($scriptToRun, ['--signal', 'SIGTERM', '--watch', Filesystem::fixturesDir()]);
+        $this->watch($scriptToRun, ['--watch', Filesystem::fixturesDir()]);
         $this->wait();
 
         Filesystem::createHelloWorldPHPFile();
         $this->wait();
-        $this->wait();
 
-        $this->assertOutputContains(SIGTERM.' signal was received');
+        $this->assertOutputContains(SIGTERM.' restarting due to change');
     }
 }

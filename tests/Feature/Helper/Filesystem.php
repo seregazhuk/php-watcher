@@ -49,7 +49,7 @@ pcntl_signal(SIGTERM, "handler");
 pcntl_signal(SIGINT, "handler");
 
 while (true) {
-    echo "Hello, world";
+    echo "Hello, world\n";
     sleep(1);
 }
 function handler($signal) {
