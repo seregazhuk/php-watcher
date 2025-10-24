@@ -72,7 +72,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         }
 
         $regexpWithExtensions = array_map(
-            static fn ($extension) => str_replace('*.', '.', $extension).'$',
+            static fn ($extension) => '"'. str_replace('*.', '.', $extension).'$"',
             $watchList->getFileExtensions()
         );
         $options[] = '-i '.implode(' ', $regexpWithExtensions);
