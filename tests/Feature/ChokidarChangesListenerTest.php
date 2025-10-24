@@ -11,7 +11,6 @@ use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChokidarChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
-
 use Symfony\Component\Process\Process;
 
 use function React\Async\delay;
@@ -25,7 +24,7 @@ final class ChokidarChangesListenerTest extends TestCase
     {
         $process = new Process(['node', '-v']);
         $process->run();
-        if($process->isSuccessful()) {
+        if ($process->isSuccessful()) {
             $this->markTestSkipped('nodejs is not available');
         }
 
