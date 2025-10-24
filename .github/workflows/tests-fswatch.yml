@@ -33,6 +33,11 @@ jobs:
       extensions: xdebug
 
     steps:
+      - name: Install Act dependencies
+        if: ${{ env.ACT }}
+        run: |
+          sudo apt-get update && apt-get install sudo -y       
+
       - name: Check Out Code
         uses: actions/checkout@v4
 
@@ -61,4 +66,4 @@ jobs:
 
       - name: Run tests with Phpunit
         run: |
-          XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite=ExceptFsWatchListener 
+          php vendor/bin/phpunit 

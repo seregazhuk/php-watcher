@@ -5,12 +5,23 @@ declare(strict_types=1);
 namespace seregazhuk\PhpWatcher\Filesystem\ChangesListener;
 
 use Evenement\EventEmitter;
+use React\EventLoop\LoopInterface;
+use React\EventLoop\TimerInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use Seregazhuk\ReactFsWatch\Change;
 use Seregazhuk\ReactFsWatch\FsWatch;
+use Symfony\Component\Process\Process;
 
 final class FSWatchChangesListener extends EventEmitter implements ChangesListenerInterface
 {
+    private ?Process $process = null;
+
+    private ?TimerInterface $timer = null;
+
+    private const INTERVAL = 0.15;
+
+    public function __construct(private readonly LoopInterface $loop) {
+
+    }
     private ?FsWatch $fsWatch = null;
 
     public static function isAvailable(): bool
@@ -35,15 +46,29 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
             return false;
         };
 
-        $this->fsWatch = new FsWatch($this->makeOptions($watchList));
-        $this->fsWatch->run();
-        $this->fsWatch->on('error', static fn ($error) => print_r($error));
-        $this->fsWatch->onChange(function (Change $fsWatchChange) use ($checkPathIsIgnored): void {
-            $isIgnored = $checkPathIsIgnored($fsWatchChange->file());
-            if (! $isIgnored) {
-                $this->emit('change');
+        $argsAndOptions = $this->makeOptions($watchList);
+        $this->process = new Process(command: ["fswatch", "-xrn", ...$argsAndOptions]);
+        $this->process->start();
+
+        $this->timer = $this->loop->addPeriodicTimer(
+            self::INTERVAL,
+            function () use ($checkPathIsIgnored): void {
+                $output = $this->process->getIncrementalOutput();
+                if ($output === '') {
+                    return;
+                }
+                $lines = explode("\n", $output);
+                foreach ($lines as $line) {
+                    if ($line === '') {
+                        continue;
+                    }
+                    [$path, ] = explode(' ', $line);
+                    if (!$checkPathIsIgnored($path)) {
+                        $this->emit('change');
+                    }
+                }
             }
-        });
+        );
     }
 
     public function onChange(callable $callback): void
@@ -53,12 +78,16 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
     public function stop(): void
     {
-        if ($this->fsWatch instanceof FsWatch) {
-            $this->fsWatch->stop();
+        if ($this->process instanceof Process && $this->process->isRunning()) {
+            $this->process->stop();
+        }
+
+        if ($this->timer instanceof TimerInterface) {
+            $this->loop->cancelTimer($this->timer);
         }
     }
 
-    private function makeOptions(WatchList $watchList): string
+    private function makeOptions(WatchList $watchList): array
     {
         $options = [];
 
@@ -72,9 +101,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
             $options = array_merge($options, $this->makeIncludeOptions($watchList));
         }
 
-        $options[] = '-I'; // Case-insensitive
-
-        return implode(' ', $options);
+        return $options;
     }
 
     /**
@@ -83,15 +110,15 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
     private function makeIncludeOptions(WatchList $watchList): array
     {
         // Before including we need to ignore everything
-        $options[] = '-e ".*"';
+        $options[] = '-e';
+        $options[] = '.*';
+        $options[] = '-i';
 
         $regexpWithExtensions = array_map(
-            static fn ($extension): string => '"'.str_replace('*.', '.', $extension).'$"',
+            static fn ($extension): string => str_replace(['*.', '.'], '\\.', $extension).'$',
             $watchList->getFileExtensions()
         );
-        $options[] = '-i '.implode(' ', $regexpWithExtensions);
-
-        return $options;
+        return array_merge($options, $regexpWithExtensions);
     }
 
     public function getName(): string

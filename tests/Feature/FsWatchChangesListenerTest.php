@@ -26,7 +26,7 @@ final class FsWatchChangesListenerTest extends TestCase
         }
 
         $loop = Loop::get();
-        $listener = new FSWatchChangesListener;
+        $listener = new FSWatchChangesListener($loop);
 
         $eventWasEmitted = false;
         $listener->onChange(function () use (&$eventWasEmitted): void {
