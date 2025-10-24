@@ -12,6 +12,10 @@
         <testsuite name="Common">
             <directory suffix="Test.php">tests</directory>
         </testsuite>
+        <testsuite name="ExceptFsWatchListener">
+            <directory suffix="Test.php">./tests</directory>
+            <exclude>./tests/Feature/FsWatchChangesListenerTest.php</exclude>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">

@@ -61,4 +61,4 @@ jobs:
 
       - name: Run tests with Phpunit
         run: |
-          XDEBUG_MODE=coverage php vendor/bin/phpunit 
+          XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite=ExceptFsWatchListener 

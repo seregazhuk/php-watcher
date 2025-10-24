@@ -12,8 +12,6 @@ use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
-use Symfony\Component\Process\Process;
-
 use function React\Async\delay;
 
 final class FsWatchChangesListenerTest extends TestCase
@@ -23,7 +21,9 @@ final class FsWatchChangesListenerTest extends TestCase
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
-        $this->markTestSkipped('fswatch is not available');
+        if (! FSWatchChangesListener::isAvailable()) {
+            $this->markTestSkipped('fswatch is not available');
+        }
 
         $loop = Loop::get();
         $listener = new FSWatchChangesListener;
