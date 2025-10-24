@@ -79,11 +79,8 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
      */
     private function makeIncludeOptions(WatchList $watchList): array
     {
-        $options = [];
         // Before including we need to ignore everything
-        if ($watchList->getIgnored() === []) {
-            $options[] = '-e ".*"';
-        }
+        $options[] = '-e ".*"';
 
         $regexpWithExtensions = array_map(
             static fn ($extension): string => '"'.str_replace('*.', '.', $extension).'$"',
