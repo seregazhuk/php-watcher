@@ -12,7 +12,6 @@ use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChokidarChangesListener;
 use seregazhuk\PhpWatcher\SystemRequirements\SystemRequirementsChecker;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
-use Symfony\Component\Process\Process;
 
 use function React\Async\delay;
 

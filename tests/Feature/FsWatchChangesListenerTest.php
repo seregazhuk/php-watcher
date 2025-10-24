@@ -32,10 +32,13 @@ final class FsWatchChangesListenerTest extends TestCase
         $listener = new FSWatchChangesListener;
         $listener->start(new WatchList([Filesystem::fixturesDir()]));
 
-        $listener->onChange(function (): void {
-            $this->assertTrue(true);
+        $eventWasEmitted = false;
+        $listener->onChange(function () use (&$eventWasEmitted): void {
+            $eventWasEmitted = true;
         });
         delay(4);
+        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
+        $listener->stop();
         $loop->stop();
     }
 }
