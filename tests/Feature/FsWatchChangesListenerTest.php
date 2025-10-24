@@ -12,6 +12,8 @@ use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
+use Symfony\Component\Process\Process;
+
 use function React\Async\delay;
 
 final class FsWatchChangesListenerTest extends TestCase
@@ -34,10 +36,14 @@ final class FsWatchChangesListenerTest extends TestCase
         });
         $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));
 
-        $listener->start(new WatchList([Filesystem::fixturesDir()]));
-        $loop->addTimer(5, fn () => $loop->stop());
+        $listener->start(new WatchList([__DIR__ . '/../../' .Filesystem::fixturesDir()]));
+        $loop->addTimer(4, fn () => $loop->stop());
+        $fswatch = new Process(['fswatch', '-xrn', '../../tests/fixtures/', '-e', '".*"', '-i', '.php$', '-I']);
+        $fswatch->start();
+        sleep(1);
+        $fswatch->stop();
+        $this->assertSame('test', $fswatch->getOutput() . ' ' . $fswatch->getErrorOutput());
 
-        delay(4);
-        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
+//        $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
     }
 }

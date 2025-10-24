@@ -20,7 +20,6 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
     public function start(WatchList $watchList): void
     {
         $this->fsWatch = new FsWatch($this->makeOptions($watchList));
-
         $this->fsWatch->run();
         $this->fsWatch->onChange(fn () => $this->emit('change'));
     }
