@@ -7,6 +7,7 @@ namespace Feature;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use React\EventLoop\Loop;
+use React\EventLoop\Timer\Timer;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
@@ -27,18 +28,18 @@ final class FsWatchChangesListenerTest extends TestCase
         }
 
         $loop = Loop::get();
-        $loop->addTimer(1, async(Filesystem::createHelloWorldPHPFile(...)));
-
         $listener = new FSWatchChangesListener;
-        $listener->start(new WatchList([Filesystem::fixturesDir()]));
 
         $eventWasEmitted = false;
         $listener->onChange(function () use (&$eventWasEmitted): void {
             $eventWasEmitted = true;
         });
-        delay(4);
+        $loop->addTimer(1, Filesystem::createHelloWorldPHPFile(...));
+
+        $listener->start(new WatchList([Filesystem::fixturesDir()]));
+        $loop->addTimer(3, fn() => $loop->stop());
+
+        delay(2);
         $this->assertTrue($eventWasEmitted, '"change" event should be emitted');
-        $listener->stop();
-        $loop->stop();
     }
 }
