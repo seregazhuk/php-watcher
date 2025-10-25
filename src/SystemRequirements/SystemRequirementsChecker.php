@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher\SystemRequirements;
 
-use Seregazhuk\ReactFsWatch\FsWatch;
 use Symfony\Component\Process\Process;
 
 final class SystemRequirementsChecker
 {
-    public static function isFsWatchAvailable(): bool
+    /**
+     * Works correctly only on OSX.
+     */
+    public static function isFSWatchAvailable(): bool
     {
-        return FsWatch::isAvailable();
+        $process = new Process(command: ['fswatch', '--version']);
+        $process->start();
+        $process->wait();
+        return $process->isSuccessful() && PHP_OS_FAMILY === 'Darwin';
     }
 
     public static function isNodeJsInstalled(): bool
@@ -20,7 +25,7 @@ final class SystemRequirementsChecker
         $process->start();
         $process->wait();
 
-        return $process->getExitCode() === 0;
+        return $process->isSuccessful();
     }
 
     public static function isChokidarInstalled(): bool
@@ -29,7 +34,7 @@ final class SystemRequirementsChecker
         $process->start();
         $process->wait();
 
-        return $process->getExitCode() === 0 && str_contains($process->getOutput(), 'chokidar');
+        return $process->isSuccessful() && str_contains($process->getOutput(), 'chokidar');
     }
 
     public static function installChokidar(): void

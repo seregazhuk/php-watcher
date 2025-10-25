@@ -16,7 +16,7 @@ final class FilesystemChangesListenerFactory
 {
     public static function create(LoopInterface $loop, Screen $screen): ChangesListenerInterface
     {
-        if (SystemRequirementsChecker::isFsWatchAvailable()) {
+        if (SystemRequirementsChecker::isFSWatchAvailable()) {
             return new FsWatchChangesListener($loop);
         }
 
