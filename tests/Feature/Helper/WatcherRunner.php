@@ -13,7 +13,7 @@ final class WatcherRunner
      */
     public function run(string $scriptToRun, array $arguments = []): Process
     {
-        $arguments = array_merge($arguments, ['--delay', 0.25]);
+        $arguments = array_merge($arguments, ['--delay', 1]);
         $process = new Process(array_merge(['./php-watcher', $scriptToRun], $arguments));
         $process->start();
 

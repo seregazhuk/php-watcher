@@ -13,7 +13,7 @@ final class SignalTest extends WatcherTestCase
     #[Test]
     public function it_sends_a_specified_signal_to_restart_the_app(): void
     {
-        if (! defined('SIGTERM')) {
+        if (! defined('SIGTERM') || ! extension_loaded('pcntl')) {
             $this->markTestSkipped('SIGTERM is not defined');
         }
 

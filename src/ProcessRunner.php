@@ -23,7 +23,9 @@ final class ProcessRunner
         $this->screen->start($this->process->getCommand());
         $this->screen->showSpinner($this->loop);
 
-        $this->process->start($this->loop);
+        if (! $this->process->isRunning()) {
+            $this->process->start();
+        }
         $this->subscribeToProcessOutput();
     }
 
@@ -35,7 +37,7 @@ final class ProcessRunner
 
     public function restart(float $delayToRestart): void
     {
-        $this->screen->restarting($this->process->getCommand());
+        $this->screen->restarting();
         $this->loop->addTimer($delayToRestart, $this->start(...));
     }
 

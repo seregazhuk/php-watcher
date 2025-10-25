@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
 
+use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChangesListenerInterface;
 
 final class Watcher
 {
-    public function __construct(private readonly \React\EventLoop\LoopInterface $loop, private readonly Filesystem\ChangesListener $filesystemListener) {}
+    public function __construct(private readonly LoopInterface $loop, private readonly ChangesListenerInterface $filesystemListener) {}
 
     public function startWatching(
         ProcessRunner $processRunner,

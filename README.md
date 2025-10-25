@@ -35,6 +35,7 @@ PHP-watcher does not require any additional changes to your code or method of
 * [Default executable](#default-executable)
 * [Gracefully reloading down your script](#gracefully-reloading-down-your-script)
 * [Automatic restart](#automatic-restart)
+* [Performance](#performance)
 * [Spinner](#spinner)
 
 ## Installation
@@ -54,9 +55,6 @@ Alternatively, you can install the package locally as a dev dependency in your
 composer require seregazhuk/php-watcher --dev
 ```
 Locally installed you can run it with `vendor/bin/php-watcher`.
-
-Under the hood, to watch filesystem changes, PHP-watcher uses JavaScript package [chokidar](https://github.com/paulmillr/chokidar).
-At first run it will check and install it if required.
 
 ## Usage
 
@@ -236,9 +234,28 @@ script crashes PHP-watcher will notify you about that.
 
 ![app exit](images/exit.svg)
 
+## Performance
+
+The watcher can use different strategies to monitor your file system changes. Under the hood it 
+detects the environment and chooses the best suitable strategy.
+
+### Fswatch (OSX only)
+
+[FsWatch](https://github.com/emcrisostomo/fswatch) is a cross-platform (Linux,Mac,Windows) file change monitor that will automatically
+use the platforms native functionality when possible. Under the hood the filesystem notifies us
+when any changes occur. Currently, it [doesn't work correctly on Linux](https://github.com/emcrisostomo/fswatch/issues/247). 
+If your system is OSx and has fswatch installed, this strategy will be used.
+
+**Has not been extensively tested.**
+
+### Chokidar
+
+[Chokidar](https://github.com/paulmillr/chokidar) is a JavaScript package for watching file and directory changes.
+At first run the watcher will check if Node.js is available in the system. If it is, it will install chokidar into the project.
+
 ## Spinner
 
-By default the watcher outputs a nice spinner which indicates that the process is running
+By default, the watcher outputs a nice spinner which indicates that the process is running
 and watching your files. But if your system doesn't support ansi coded the watcher
 will try to detect it and disable the spinner. Or you can always disable the spinner
 manually with option '--no-spinner':

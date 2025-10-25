@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace seregazhuk\PhpWatcher;
 
-use AlecRabbit\Snake\Contracts\SpinnerInterface;
 use React\EventLoop\Loop;
 use React\EventLoop\LoopInterface;
 use seregazhuk\PhpWatcher\Config\Builder;
 use seregazhuk\PhpWatcher\Config\Config;
 use seregazhuk\PhpWatcher\Config\InputExtractor;
-use seregazhuk\PhpWatcher\Filesystem\ChangesListener;
+use seregazhuk\PhpWatcher\Filesystem\ChangesListener\ChangesListenerInterface;
+use seregazhuk\PhpWatcher\Filesystem\FilesystemChangesListenerFactory;
 use seregazhuk\PhpWatcher\Screen\Screen;
 use seregazhuk\PhpWatcher\Screen\SpinnerFactory;
-use seregazhuk\PhpWatcher\SystemRequirements\SystemRequirements;
+use seregazhuk\PhpWatcher\SystemRequirements\SystemRequirementsNotMetException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -63,18 +63,21 @@ final class WatcherCommand extends BaseCommand
         $spinner = SpinnerFactory::create($output, $config->spinnerDisabled());
         $screen = new Screen(new SymfonyStyle($input, $output), $spinner);
 
-        $requirements = new SystemRequirements($screen);
-        if ($requirements->check() === false) {
+        $loop = Loop::get();
+        try {
+            $filesystemListener = FilesystemChangesListenerFactory::create($loop, $screen);
+        } catch (SystemRequirementsNotMetException $e) {
+            $screen->warning($e->getMessage());
+
             return Command::FAILURE;
         }
+        $this->addTerminationListeners($loop, $screen, $filesystemListener);
 
-        $loop = Loop::get();
-        $this->addTerminationListeners($loop, $spinner);
-        $filesystem = new ChangesListener($loop);
         $screen->showOptions($config->watchList());
+        $screen->showFilesystemListener($filesystemListener);
         $processRunner = new ProcessRunner($loop, $screen, $config->command());
 
-        $watcher = new Watcher($loop, $filesystem);
+        $watcher = new Watcher($loop, $filesystemListener);
         $watcher->startWatching(
             $processRunner,
             $config->watchList(),
@@ -88,10 +91,12 @@ final class WatcherCommand extends BaseCommand
     /**
      * When terminating the watcher, we need to manually restore the cursor after the spinner.
      */
-    private function addTerminationListeners(LoopInterface $loop, SpinnerInterface $spinner): void
+    private function addTerminationListeners(LoopInterface $loop, Screen $screen, ChangesListenerInterface $changesListener): void
     {
-        $func = static function (int $signal) use ($spinner): never {
-            $spinner->end();
+        $func = static function (int $signal) use ($screen, $changesListener, $loop): never {
+            $screen->stop($loop);
+            $changesListener->stop();
+            $loop->stop();
             exit($signal);
         };
 

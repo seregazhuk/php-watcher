@@ -6,19 +6,16 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="true"
+         stopOnFailure="false"
          bootstrap="vendor/autoload.php">
     <testsuites>
         <testsuite name="Common">
-            <directory suffix="Test.php">tests</directory>
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
-            <exclude>
-                <file>src/Filesystem/watcher.php</file>
-            </exclude>
         </whitelist>
     </filter>
 </phpunit>

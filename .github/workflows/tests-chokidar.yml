@@ -1,4 +1,4 @@
-name: 'Tests'
+name: 'Tests with Chokidar'
 
 on:
   push:
@@ -19,7 +19,8 @@ on:
 
 jobs:
   tests:
-    name: Tests (PHP ${{ matrix.php }}, OS ${{ matrix.os }})
+    timeout-minutes: 5
+    name: Tests with Chokidar (PHP ${{ matrix.php }}, OS ${{ matrix.os }})
 
     runs-on: ${{ matrix.os }}
 
@@ -35,11 +36,20 @@ jobs:
       - name: Check Out Code
         uses: actions/checkout@v4
 
+      - name: Remove fswatch
+        run: sudo apt-get remove fswatch
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+
+      - name: Install chokidar
+        run: npm install chokidar
+
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: dom, sockets, grpc, curl ${{ matrix.extensions-suffix }}
+          extensions: pcntl
 
       - name: Validate composer.json and composer.lock
         run: composer validate --strict
@@ -57,4 +67,4 @@ jobs:
 
       - name: Run tests with Phpunit
         run: |
-          XDEBUG_MODE=coverage php vendor/bin/phpunit --testsuite unit
+          XDEBUG_MODE=coverage php vendor/bin/phpunit 
