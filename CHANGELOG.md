@@ -1,3 +1,6 @@
+## 0.8.0 (2025-10-25)
+* Feature: added support for fswatch (OSX only)
+
 ## 0.7.0 (2025-10-23)
 * Feature: add support for PHP 8.1
 * Feature: rebuild the entire engine, now it works on top of Nodejs chokidar package.
