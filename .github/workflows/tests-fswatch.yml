@@ -32,16 +32,11 @@ jobs:
       extensions: xdebug
 
     steps:
-      - name: Install Act dependencies
-        if: ${{ env.ACT }}
-        run: |
-          sudo apt-get update && apt-get install sudo -y       
-
       - name: Check Out Code
         uses: actions/checkout@v4
 
       - name: Install fswatch
-        run: sudo apt-get install fswatch
+        run: brew install fswatch
 
       - name: Setup PHP ${{ matrix.php }}
         uses: shivammathur/setup-php@v2
