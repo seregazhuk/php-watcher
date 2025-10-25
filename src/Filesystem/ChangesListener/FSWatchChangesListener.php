@@ -84,6 +84,9 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function makeOptions(WatchList $watchList): array
     {
         $options = [];
