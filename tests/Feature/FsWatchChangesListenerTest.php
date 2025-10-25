@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use React\EventLoop\Loop;
 use seregazhuk\PhpWatcher\Config\WatchList;
 use seregazhuk\PhpWatcher\Filesystem\ChangesListener\FSWatchChangesListener;
+use seregazhuk\PhpWatcher\SystemRequirements\SystemRequirementsChecker;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\Filesystem;
 use seregazhuk\PhpWatcher\Tests\Feature\Helper\WithFilesystem;
 
@@ -21,7 +22,7 @@ final class FsWatchChangesListenerTest extends TestCase
     #[Test]
     public function it_emits_change_event_on_changes(): void
     {
-        if (! FSWatchChangesListener::isAvailable()) {
+        if (! SystemRequirementsChecker::isFSWatchAvailable()) {
             $this->markTestSkipped('fswatch is not available');
         }
 

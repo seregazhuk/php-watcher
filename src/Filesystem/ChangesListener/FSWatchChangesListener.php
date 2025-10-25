@@ -8,7 +8,6 @@ use Evenement\EventEmitter;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\TimerInterface;
 use seregazhuk\PhpWatcher\Config\WatchList;
-use Seregazhuk\ReactFsWatch\FsWatch;
 use Symfony\Component\Process\Process;
 
 final class FSWatchChangesListener extends EventEmitter implements ChangesListenerInterface
@@ -20,11 +19,6 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
     private const INTERVAL = 0.15;
 
     public function __construct(private readonly LoopInterface $loop) {}
-
-    public static function isAvailable(): bool
-    {
-        return FsWatch::isAvailable();
-    }
 
     public function start(WatchList $watchList): void
     {
@@ -98,7 +92,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
         // then include
         if ($watchList->getFileExtensions() !== []) {
-            $options = array_merge($options, $this->makeIncludeOptions($watchList));
+            return array_merge($options, $this->makeIncludeOptions($watchList));
         }
 
         return $options;
