@@ -16,6 +16,7 @@ final class SystemRequirementsChecker
         $process = new Process(command: ['fswatch', '--version']);
         $process->start();
         $process->wait();
+
         return $process->isSuccessful() && PHP_OS_FAMILY === 'Darwin';
     }
 

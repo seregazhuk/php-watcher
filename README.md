@@ -239,11 +239,12 @@ script crashes PHP-watcher will notify you about that.
 The watcher can use different strategies to monitor your file system changes. Under the hood it 
 detects the environment and chooses the best suitable strategy.
 
-### Fswatch
+### Fswatch (OSX only)
 
 [FsWatch](https://github.com/emcrisostomo/fswatch) is a cross-platform (Linux,Mac,Windows) file change monitor that will automatically
 use the platforms native functionality when possible. Under the hood the filesystem notifies us
-when any changes occur. If your system has fswatch installed, this strategy will be used.
+when any changes occur. Currently, it [doesn't work correctly on Linux](https://github.com/emcrisostomo/fswatch/issues/247). 
+If your system is OSx and has fswatch installed, this strategy will be used.
 
 **Has not been extensively tested.**
 

@@ -19,10 +19,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
 
     private const INTERVAL = 0.15;
 
-    public function __construct(private readonly LoopInterface $loop) {
-
-    }
-    private ?FsWatch $fsWatch = null;
+    public function __construct(private readonly LoopInterface $loop) {}
 
     public static function isAvailable(): bool
     {
@@ -47,7 +44,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
         };
 
         $argsAndOptions = $this->makeOptions($watchList);
-        $this->process = new Process(command: ["fswatch", "-xrn", ...$argsAndOptions]);
+        $this->process = new Process(command: ['fswatch', '-xrn', ...$argsAndOptions]);
         $this->process->start();
 
         $this->timer = $this->loop->addPeriodicTimer(
@@ -62,8 +59,8 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
                     if ($line === '') {
                         continue;
                     }
-                    [$path, ] = explode(' ', $line);
-                    if (!$checkPathIsIgnored($path)) {
+                    [$path] = explode(' ', $line);
+                    if (! $checkPathIsIgnored($path)) {
                         $this->emit('change');
                     }
                 }
@@ -118,6 +115,7 @@ final class FSWatchChangesListener extends EventEmitter implements ChangesListen
             static fn ($extension): string => str_replace(['*.', '.'], '\\.', $extension).'$',
             $watchList->getFileExtensions()
         );
+
         return array_merge($options, $regexpWithExtensions);
     }
 
